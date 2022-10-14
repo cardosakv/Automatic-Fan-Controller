@@ -1,0 +1,108 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <RootNamespace>Automatic_Fan_Controller</RootNamespace>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>assets\images\fancontroller.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="assets\fonts\Montserrat\Montserrat-Black.ttf" />
+    <None Remove="assets\fonts\Montserrat\Montserrat-BlackItalic.ttf" />
+    <None Remove="assets\fonts\Montserrat\Montserrat-Bold.ttf" />
+    <None Remove="assets\fonts\Montserrat\Montserrat-BoldItalic.ttf" />
+    <None Remove="assets\fonts\Montserrat\Montserrat-ExtraBold.ttf" />
+    <None Remove="assets\fonts\Montserrat\Montserrat-ExtraBoldItalic.ttf" />
+    <None Remove="assets\fonts\Montserrat\Montserrat-ExtraLight.ttf" />
+    <None Remove="assets\fonts\Montserrat\Montserrat-ExtraLightItalic.ttf" />
+    <None Remove="assets\fonts\Montserrat\Montserrat-Italic.ttf" />
+    <None Remove="assets\fonts\Montserrat\Montserrat-Light.ttf" />
+    <None Remove="assets\fonts\Montserrat\Montserrat-LightItalic.ttf" />
+    <None Remove="assets\fonts\Montserrat\Montserrat-Medium.ttf" />
+    <None Remove="assets\fonts\Montserrat\Montserrat-MediumItalic.ttf" />
+    <None Remove="assets\fonts\Montserrat\Montserrat-Regular.ttf" />
+    <None Remove="assets\fonts\Montserrat\Montserrat-SemiBold.ttf" />
+    <None Remove="assets\fonts\Montserrat\Montserrat-SemiBoldItalic.ttf" />
+    <None Remove="assets\fonts\Montserrat\Montserrat-Thin.ttf" />
+    <None Remove="assets\fonts\Montserrat\Montserrat-ThinItalic.ttf" />
+    <None Remove="assets\fonts\Source_Sans_Pro\SourceSansPro-Black.ttf" />
+    <None Remove="assets\fonts\Source_Sans_Pro\SourceSansPro-BlackItalic.ttf" />
+    <None Remove="assets\fonts\Source_Sans_Pro\SourceSansPro-Bold.ttf" />
+    <None Remove="assets\fonts\Source_Sans_Pro\SourceSansPro-BoldItalic.ttf" />
+    <None Remove="assets\fonts\Source_Sans_Pro\SourceSansPro-ExtraLight.ttf" />
+    <None Remove="assets\fonts\Source_Sans_Pro\SourceSansPro-ExtraLightItalic.ttf" />
+    <None Remove="assets\fonts\Source_Sans_Pro\SourceSansPro-Italic.ttf" />
+    <None Remove="assets\fonts\Source_Sans_Pro\SourceSansPro-Light.ttf" />
+    <None Remove="assets\fonts\Source_Sans_Pro\SourceSansPro-LightItalic.ttf" />
+    <None Remove="assets\fonts\Source_Sans_Pro\SourceSansPro-Regular.ttf" />
+    <None Remove="assets\fonts\Source_Sans_Pro\SourceSansPro-SemiBold.ttf" />
+    <None Remove="assets\fonts\Source_Sans_Pro\SourceSansPro-SemiBoldItalic.ttf" />
+    <None Remove="assets\images\check.png" />
+    <None Remove="assets\images\connected.png" />
+    <None Remove="assets\images\disconnected.png" />
+    <None Remove="assets\images\fancontroller.ico" />
+    <None Remove="assets\images\fanspeed.png" />
+    <None Remove="assets\images\notfound.png" />
+    <None Remove="assets\images\peoplecount.png" />
+    <None Remove="assets\images\search.png" />
+    <None Remove="assets\images\searching.gif" />
+    <None Remove="assets\images\settings.png" />
+    <None Remove="assets\images\temperature.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="assets\images\fancontroller.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.IO.Ports" Version="6.0.0" />
+    <PackageReference Include="System.Management" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="assets\fonts\Montserrat\Montserrat-Black.ttf" />
+    <Resource Include="assets\fonts\Montserrat\Montserrat-BlackItalic.ttf" />
+    <Resource Include="assets\fonts\Montserrat\Montserrat-Bold.ttf" />
+    <Resource Include="assets\fonts\Montserrat\Montserrat-BoldItalic.ttf" />
+    <Resource Include="assets\fonts\Montserrat\Montserrat-ExtraBold.ttf" />
+    <Resource Include="assets\fonts\Montserrat\Montserrat-ExtraBoldItalic.ttf" />
+    <Resource Include="assets\fonts\Montserrat\Montserrat-ExtraLight.ttf" />
+    <Resource Include="assets\fonts\Montserrat\Montserrat-ExtraLightItalic.ttf" />
+    <Resource Include="assets\fonts\Montserrat\Montserrat-Italic.ttf" />
+    <Resource Include="assets\fonts\Montserrat\Montserrat-Light.ttf" />
+    <Resource Include="assets\fonts\Montserrat\Montserrat-LightItalic.ttf" />
+    <Resource Include="assets\fonts\Montserrat\Montserrat-Medium.ttf" />
+    <Resource Include="assets\fonts\Montserrat\Montserrat-MediumItalic.ttf" />
+    <Resource Include="assets\fonts\Montserrat\Montserrat-Regular.ttf" />
+    <Resource Include="assets\fonts\Montserrat\Montserrat-SemiBold.ttf" />
+    <Resource Include="assets\fonts\Montserrat\Montserrat-SemiBoldItalic.ttf" />
+    <Resource Include="assets\fonts\Montserrat\Montserrat-Thin.ttf" />
+    <Resource Include="assets\fonts\Montserrat\Montserrat-ThinItalic.ttf" />
+    <Resource Include="assets\fonts\Source_Sans_Pro\SourceSansPro-Black.ttf" />
+    <Resource Include="assets\fonts\Source_Sans_Pro\SourceSansPro-BlackItalic.ttf" />
+    <Resource Include="assets\fonts\Source_Sans_Pro\SourceSansPro-Bold.ttf" />
+    <Resource Include="assets\fonts\Source_Sans_Pro\SourceSansPro-BoldItalic.ttf" />
+    <Resource Include="assets\fonts\Source_Sans_Pro\SourceSansPro-ExtraLight.ttf" />
+    <Resource Include="assets\fonts\Source_Sans_Pro\SourceSansPro-ExtraLightItalic.ttf" />
+    <Resource Include="assets\fonts\Source_Sans_Pro\SourceSansPro-Italic.ttf" />
+    <Resource Include="assets\fonts\Source_Sans_Pro\SourceSansPro-Light.ttf" />
+    <Resource Include="assets\fonts\Source_Sans_Pro\SourceSansPro-LightItalic.ttf" />
+    <Resource Include="assets\fonts\Source_Sans_Pro\SourceSansPro-Regular.ttf" />
+    <Resource Include="assets\fonts\Source_Sans_Pro\SourceSansPro-SemiBold.ttf" />
+    <Resource Include="assets\fonts\Source_Sans_Pro\SourceSansPro-SemiBoldItalic.ttf" />
+    <Resource Include="assets\images\check.png" />
+    <Resource Include="assets\images\connected.png" />
+    <Resource Include="assets\images\disconnected.png" />
+    <Resource Include="assets\images\fancontroller.ico" />
+    <Resource Include="assets\images\fanspeed.png" />
+    <Resource Include="assets\images\notfound.png" />
+    <Resource Include="assets\images\peoplecount.png" />
+    <Resource Include="assets\images\search.png" />
+    <Resource Include="assets\images\settings.png" />
+    <Resource Include="assets\images\temperature.png" />
+  </ItemGroup>
+
+</Project>

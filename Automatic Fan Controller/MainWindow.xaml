@@ -1,0 +1,1226 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Automatic_Fan_Controller" 
+        x:Class="Automatic_Fan_Controller.MainWindow"
+        mc:Ignorable="d"
+        Height="505" 
+        Width="805"
+        ResizeMode="CanResize"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome ResizeBorderThickness="0" CaptionHeight="0"/>
+    </WindowChrome.WindowChrome>
+
+    <Window.Style>
+        <Style TargetType="Window">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsAutoMode}" Value="True">
+                    <Setter Property="Title" Value="Fan Controller - Auto Mode"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsAutoMode}" Value="False">
+                    <Setter Property="Title" Value="Fan Controller - Manual Mode"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Style>
+
+    <Window.Resources>
+        <Style x:Key="MinimizeButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Padding" Value="0,0,0,3"/>
+            <Setter Property="Foreground" Value="{StaticResource GrayDark}"/>
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border BorderThickness="0" 
+                                BorderBrush="White" 
+                                Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="Background" Value="{StaticResource GrayRegular}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseCaptured" Value="True">
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="Background" Value="{StaticResource GrayDark}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CloseButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Padding" Value="0,0,0,3"/>
+            <Setter Property="Foreground" Value="{StaticResource GrayDark}"/>
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border BorderThickness="0" 
+                                BorderBrush="White" 
+                                Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="Background" Value="{StaticResource RedIdle}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseCaptured" Value="True">
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="Background" Value="{StaticResource RedPressed}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ContainerMain" TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="{StaticResource GrayDark}"/>
+            <Setter Property="FontFamily" Value="{StaticResource Montserrat}"/>
+            <Setter Property="BorderThickness" Value="0,0,0,5"/>
+            <Setter Property="BorderBrush" Value="{StaticResource GrayDark}"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="None"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border CornerRadius="6" 
+                                Padding="{TemplateBinding Padding}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ContainerSubControls" TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="{StaticResource GrayDark}"/>
+            <Setter Property="FontFamily" Value="{StaticResource Montserrat}"/>
+            <Setter Property="BorderThickness" Value="0,4,0,4"/>
+            <Setter Property="BorderBrush" Value="{StaticResource GrayRegular}"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="None"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" Padding="{TemplateBinding Padding}"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ScaleButtonTemp" TargetType="{x:Type Button}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="{StaticResource BrandRed}"/>
+            <Setter Property="Foreground" Value="{StaticResource White}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BrandRed}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontFamily" Value="{StaticResource SourceSansPro}"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Padding="0,0,0,0" SnapsToDevicePixels="True" CornerRadius="20" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="Background" Value="{StaticResource BrandRedHover}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseCaptured" Value="True">
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="Background" Value="{StaticResource BrandRedPressed}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ScaleButtonFan" TargetType="{x:Type Button}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="{StaticResource BrandGreen}"/>
+            <Setter Property="Foreground" Value="{StaticResource White}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BrandGreen}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontFamily" Value="{StaticResource SourceSansPro}"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Padding="0,0,0,0" SnapsToDevicePixels="True" CornerRadius="20" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="Background" Value="{StaticResource BrandGreenHover}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseCaptured" Value="True">
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="Background" Value="{StaticResource BrandGreenPressed}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ScaleButtonFan2" TargetType="{x:Type Button}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="{StaticResource BrandGreen}"/>
+            <Setter Property="Foreground" Value="{StaticResource White}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BrandGreen}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontFamily" Value="{StaticResource Montserrat}"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="9"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Padding="0,0,0,0" SnapsToDevicePixels="True" CornerRadius="20" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="Background" Value="{StaticResource BrandGreenHover}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseCaptured" Value="True">
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="Background" Value="{StaticResource BrandGreenPressed}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="RepeatButtonTransparent" TargetType="{x:Type RepeatButton}">
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Focusable" Value="false"/>
+            <Setter Property="IsTabStop" Value="false"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RepeatButton}">
+                        <Rectangle Fill="{TemplateBinding Background}" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="SliderThumb.Static.Background" Color="#5bb381"/>
+        <SolidColorBrush x:Key="SliderThumb.Static.Border" Color="#5bb381"/>
+        <SolidColorBrush x:Key="SliderThumb.Static.Foreground" Color="#5bb381"/>
+        <SolidColorBrush x:Key="SliderThumb.MouseOver.Background" Color="#5bb381"/>
+        <SolidColorBrush x:Key="SliderThumb.MouseOver.Border" Color="#5bb381"/>
+        <SolidColorBrush x:Key="SliderThumb.Pressed.Background" Color="#5bb381"/>
+        <SolidColorBrush x:Key="SliderThumb.Pressed.Border" Color="#5bb381"/>
+        <SolidColorBrush x:Key="SliderThumb.Disabled.Background" Color="#FFF0F0F0"/>
+        <SolidColorBrush x:Key="SliderThumb.Disabled.Border" Color="#c4c9cf"/>
+        <SolidColorBrush x:Key="SliderThumb.Track.Background" Color="#c4c9cf"/>
+        <SolidColorBrush x:Key="SliderThumb.Track.Border" Color="#c4c9cf"/>
+        <ControlTemplate x:Key="SliderThumbHorizontalDefault" TargetType="{x:Type Thumb}">
+            <Grid HorizontalAlignment="Center" UseLayoutRounding="True" VerticalAlignment="Center">
+                <Path x:Name="grip" Data="M 0,0 C0,0 11,0 11,0 11,0 11,18 11,18 11,18 0,18 0,18 0,18 0,0 0,0 z" Fill="{StaticResource SliderThumb.Static.Background}" Stroke="{StaticResource SliderThumb.Static.Border}" SnapsToDevicePixels="True" Stretch="Fill" StrokeThickness="1" UseLayoutRounding="True" VerticalAlignment="Center"/>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Fill" TargetName="grip" Value="{StaticResource SliderThumb.MouseOver.Background}"/>
+                    <Setter Property="Stroke" TargetName="grip" Value="{StaticResource SliderThumb.MouseOver.Border}"/>
+                </Trigger>
+                <Trigger Property="IsDragging" Value="true">
+                    <Setter Property="Fill" TargetName="grip" Value="{StaticResource SliderThumb.Pressed.Background}"/>
+                    <Setter Property="Stroke" TargetName="grip" Value="{StaticResource SliderThumb.Pressed.Border}"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Fill" TargetName="grip" Value="{StaticResource SliderThumb.Disabled.Background}"/>
+                    <Setter Property="Stroke" TargetName="grip" Value="{StaticResource SliderThumb.Disabled.Border}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <ControlTemplate x:Key="SliderThumbHorizontalTop" TargetType="{x:Type Thumb}">
+            <Grid HorizontalAlignment="Center" UseLayoutRounding="True" VerticalAlignment="Center">
+                <Path x:Name="grip" Data="M 0,6 C0,6 5.5,0 5.5,0 5.5,0 11,6 11,6 11,6 11,18 11,18 11,18 0,18 0,18 0,18 0,6 0,6 z" Fill="{StaticResource SliderThumb.Static.Background}" Stroke="{StaticResource SliderThumb.Static.Border}" SnapsToDevicePixels="True" Stretch="Fill" StrokeThickness="1" UseLayoutRounding="True" VerticalAlignment="Center"/>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Fill" TargetName="grip" Value="{StaticResource SliderThumb.MouseOver.Background}"/>
+                    <Setter Property="Stroke" TargetName="grip" Value="{StaticResource SliderThumb.MouseOver.Border}"/>
+                </Trigger>
+                <Trigger Property="IsDragging" Value="true">
+                    <Setter Property="Fill" TargetName="grip" Value="{StaticResource SliderThumb.Pressed.Background}"/>
+                    <Setter Property="Stroke" TargetName="grip" Value="{StaticResource SliderThumb.Pressed.Border}"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Fill" TargetName="grip" Value="{StaticResource SliderThumb.Disabled.Background}"/>
+                    <Setter Property="Stroke" TargetName="grip" Value="{StaticResource SliderThumb.Disabled.Border}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <ControlTemplate x:Key="SliderThumbHorizontalBottom" TargetType="{x:Type Thumb}">
+            <Grid HorizontalAlignment="Center" UseLayoutRounding="True" VerticalAlignment="Center">
+                <Path x:Name="grip" Data="M 0,12 C0,12 5.5,18 5.5,18 5.5,18 11,12 11,12 11,12 11,0 11,0 11,0 0,0 0,0 0,0 0,12 0,12 z" Fill="{StaticResource SliderThumb.Static.Background}" Stroke="{StaticResource SliderThumb.Static.Border}" SnapsToDevicePixels="True" Stretch="Fill" StrokeThickness="1" UseLayoutRounding="True" VerticalAlignment="Center"/>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Fill" TargetName="grip" Value="{StaticResource SliderThumb.MouseOver.Background}"/>
+                    <Setter Property="Stroke" TargetName="grip" Value="{StaticResource SliderThumb.MouseOver.Border}"/>
+                </Trigger>
+                <Trigger Property="IsDragging" Value="true">
+                    <Setter Property="Fill" TargetName="grip" Value="{StaticResource SliderThumb.Pressed.Background}"/>
+                    <Setter Property="Stroke" TargetName="grip" Value="{StaticResource SliderThumb.Pressed.Border}"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Fill" TargetName="grip" Value="{StaticResource SliderThumb.Disabled.Background}"/>
+                    <Setter Property="Stroke" TargetName="grip" Value="{StaticResource SliderThumb.Disabled.Border}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <ControlTemplate x:Key="SliderHorizontal" TargetType="{x:Type Slider}">
+            <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TickBar x:Name="TopTick" Fill="{TemplateBinding Foreground}" Height="4" Margin="0,0,0,2" Placement="Top" Grid.Row="0" Visibility="Collapsed"/>
+                    <TickBar x:Name="BottomTick" Fill="{TemplateBinding Foreground}" Height="4" Margin="0,2,0,0" Placement="Bottom" Grid.Row="2" Visibility="Collapsed"/>
+                    <Border x:Name="TrackBackground" Background="{StaticResource SliderThumb.Track.Background}" BorderBrush="{StaticResource SliderThumb.Track.Border}" BorderThickness="1" Height="4.0" Margin="5,0" Grid.Row="1" VerticalAlignment="center">
+                        <Canvas Margin="-6,-1">
+                            <Rectangle x:Name="PART_SelectionRange" Fill="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Height="4.0" Visibility="Hidden"/>
+                        </Canvas>
+                    </Border>
+                    <Track x:Name="PART_Track" Grid.Row="1">
+                        <Track.DecreaseRepeatButton>
+                            <RepeatButton Command="{x:Static Slider.DecreaseLarge}" Style="{StaticResource RepeatButtonTransparent}"/>
+                        </Track.DecreaseRepeatButton>
+                        <Track.IncreaseRepeatButton>
+                            <RepeatButton Command="{x:Static Slider.IncreaseLarge}" Style="{StaticResource RepeatButtonTransparent}"/>
+                        </Track.IncreaseRepeatButton>
+                        <Track.Thumb>
+                            <Thumb x:Name="Thumb" Focusable="False" Height="18" OverridesDefaultStyle="True" Template="{StaticResource SliderThumbHorizontalDefault}" VerticalAlignment="Center" Width="11"/>
+                        </Track.Thumb>
+                    </Track>
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="TickPlacement" Value="TopLeft">
+                    <Setter Property="Visibility" TargetName="TopTick" Value="Visible"/>
+                    <Setter Property="Template" TargetName="Thumb" Value="{StaticResource SliderThumbHorizontalTop}"/>
+                    <Setter Property="Margin" TargetName="TrackBackground" Value="5,2,5,0"/>
+                </Trigger>
+                <Trigger Property="TickPlacement" Value="BottomRight">
+                    <Setter Property="Visibility" TargetName="BottomTick" Value="Visible"/>
+                    <Setter Property="Template" TargetName="Thumb" Value="{StaticResource SliderThumbHorizontalBottom}"/>
+                    <Setter Property="Margin" TargetName="TrackBackground" Value="5,0,5,2"/>
+                </Trigger>
+                <Trigger Property="TickPlacement" Value="Both">
+                    <Setter Property="Visibility" TargetName="TopTick" Value="Visible"/>
+                    <Setter Property="Visibility" TargetName="BottomTick" Value="Visible"/>
+                </Trigger>
+                <Trigger Property="IsSelectionRangeEnabled" Value="true">
+                    <Setter Property="Visibility" TargetName="PART_SelectionRange" Value="Visible"/>
+                </Trigger>
+                <Trigger Property="IsKeyboardFocused" Value="true">
+                    <Setter Property="Foreground" TargetName="Thumb" Value="Blue"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <ControlTemplate x:Key="SliderThumbVerticalDefault" TargetType="{x:Type Thumb}">
+            <Grid HorizontalAlignment="Center" UseLayoutRounding="True" VerticalAlignment="Center">
+                <Path x:Name="grip" Data="M0.5,0.5 L18.5,0.5 18.5,11.5 0.5,11.5z" Fill="{StaticResource SliderThumb.Static.Background}" Stroke="{StaticResource SliderThumb.Static.Border}" Stretch="Fill"/>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Fill" TargetName="grip" Value="{StaticResource SliderThumb.MouseOver.Background}"/>
+                    <Setter Property="Stroke" TargetName="grip" Value="{StaticResource SliderThumb.MouseOver.Border}"/>
+                </Trigger>
+                <Trigger Property="IsDragging" Value="true">
+                    <Setter Property="Fill" TargetName="grip" Value="{StaticResource SliderThumb.Pressed.Background}"/>
+                    <Setter Property="Stroke" TargetName="grip" Value="{StaticResource SliderThumb.Pressed.Border}"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Fill" TargetName="grip" Value="{StaticResource SliderThumb.Disabled.Background}"/>
+                    <Setter Property="Stroke" TargetName="grip" Value="{StaticResource SliderThumb.Disabled.Border}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <ControlTemplate x:Key="SliderThumbVerticalLeft" TargetType="{x:Type Thumb}">
+            <Grid HorizontalAlignment="Center" UseLayoutRounding="True" VerticalAlignment="Center">
+                <Path x:Name="grip" Data="M 6,11 C6,11 0,5.5 0,5.5 0,5.5 6,0 6,0 6,0 18,0 18,0 18,0 18,11 18,11 18,11 6,11 6,11 z" Fill="{StaticResource SliderThumb.Static.Background}" Stroke="{StaticResource SliderThumb.Static.Border}" Stretch="Fill"/>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Fill" TargetName="grip" Value="{StaticResource SliderThumb.MouseOver.Background}"/>
+                    <Setter Property="Stroke" TargetName="grip" Value="{StaticResource SliderThumb.MouseOver.Border}"/>
+                </Trigger>
+                <Trigger Property="IsDragging" Value="true">
+                    <Setter Property="Fill" TargetName="grip" Value="{StaticResource SliderThumb.Pressed.Background}"/>
+                    <Setter Property="Stroke" TargetName="grip" Value="{StaticResource SliderThumb.Pressed.Border}"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Fill" TargetName="grip" Value="{StaticResource SliderThumb.Disabled.Background}"/>
+                    <Setter Property="Stroke" TargetName="grip" Value="{StaticResource SliderThumb.Disabled.Border}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <ControlTemplate x:Key="SliderThumbVerticalRight" TargetType="{x:Type Thumb}">
+            <Grid HorizontalAlignment="Center" UseLayoutRounding="True" VerticalAlignment="Center">
+                <Path x:Name="grip" Data="M 12,11 C12,11 18,5.5 18,5.5 18,5.5 12,0 12,0 12,0 0,0 0,0 0,0 0,11 0,11 0,11 12,11 12,11 z" Fill="{StaticResource SliderThumb.Static.Background}" Stroke="{StaticResource SliderThumb.Static.Border}" Stretch="Fill"/>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Fill" TargetName="grip" Value="{StaticResource SliderThumb.MouseOver.Background}"/>
+                    <Setter Property="Stroke" TargetName="grip" Value="{StaticResource SliderThumb.MouseOver.Border}"/>
+                </Trigger>
+                <Trigger Property="IsDragging" Value="true">
+                    <Setter Property="Fill" TargetName="grip" Value="{StaticResource SliderThumb.Pressed.Background}"/>
+                    <Setter Property="Stroke" TargetName="grip" Value="{StaticResource SliderThumb.Pressed.Border}"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Fill" TargetName="grip" Value="{StaticResource SliderThumb.Disabled.Background}"/>
+                    <Setter Property="Stroke" TargetName="grip" Value="{StaticResource SliderThumb.Disabled.Border}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <ControlTemplate x:Key="SliderVertical" TargetType="{x:Type Slider}">
+            <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition MinWidth="{TemplateBinding MinWidth}" Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TickBar x:Name="TopTick" Grid.Column="0" Fill="{TemplateBinding Foreground}" Margin="0,0,2,0" Placement="Left" Visibility="Collapsed" Width="4"/>
+                    <TickBar x:Name="BottomTick" Grid.Column="2" Fill="{TemplateBinding Foreground}" Margin="2,0,0,0" Placement="Right" Visibility="Collapsed" Width="4"/>
+                    <Border x:Name="TrackBackground" Background="{StaticResource SliderThumb.Track.Background}" BorderBrush="{StaticResource SliderThumb.Track.Border}" BorderThickness="1" Grid.Column="1" HorizontalAlignment="center" Margin="0,5" Width="4.0">
+                        <Canvas Margin="-1,-6">
+                            <Rectangle x:Name="PART_SelectionRange" Fill="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Visibility="Hidden" Width="4.0"/>
+                        </Canvas>
+                    </Border>
+                    <Track x:Name="PART_Track" Grid.Column="1">
+                        <Track.DecreaseRepeatButton>
+                            <RepeatButton Command="{x:Static Slider.DecreaseLarge}" Style="{StaticResource RepeatButtonTransparent}"/>
+                        </Track.DecreaseRepeatButton>
+                        <Track.IncreaseRepeatButton>
+                            <RepeatButton Command="{x:Static Slider.IncreaseLarge}" Style="{StaticResource RepeatButtonTransparent}"/>
+                        </Track.IncreaseRepeatButton>
+                        <Track.Thumb>
+                            <Thumb x:Name="Thumb" Focusable="False" Height="11" OverridesDefaultStyle="True" Template="{StaticResource SliderThumbVerticalDefault}" VerticalAlignment="Top" Width="18"/>
+                        </Track.Thumb>
+                    </Track>
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="TickPlacement" Value="TopLeft">
+                    <Setter Property="Visibility" TargetName="TopTick" Value="Visible"/>
+                    <Setter Property="Template" TargetName="Thumb" Value="{StaticResource SliderThumbVerticalLeft}"/>
+                    <Setter Property="Margin" TargetName="TrackBackground" Value="2,5,0,5"/>
+                </Trigger>
+                <Trigger Property="TickPlacement" Value="BottomRight">
+                    <Setter Property="Visibility" TargetName="BottomTick" Value="Visible"/>
+                    <Setter Property="Template" TargetName="Thumb" Value="{StaticResource SliderThumbVerticalRight}"/>
+                    <Setter Property="Margin" TargetName="TrackBackground" Value="0,5,2,5"/>
+                </Trigger>
+                <Trigger Property="TickPlacement" Value="Both">
+                    <Setter Property="Visibility" TargetName="TopTick" Value="Visible"/>
+                    <Setter Property="Visibility" TargetName="BottomTick" Value="Visible"/>
+                </Trigger>
+                <Trigger Property="IsSelectionRangeEnabled" Value="true">
+                    <Setter Property="Visibility" TargetName="PART_SelectionRange" Value="Visible"/>
+                </Trigger>
+                <Trigger Property="IsKeyboardFocused" Value="true">
+                    <Setter Property="Foreground" TargetName="Thumb" Value="Blue"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <Style x:Key="SliderStyle" TargetType="{x:Type Slider}">
+            <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource SliderThumb.Static.Foreground}"/>
+            <Setter Property="Template" Value="{StaticResource SliderHorizontal}"/>
+            <Style.Triggers>
+                <Trigger Property="Orientation" Value="Vertical">
+                    <Setter Property="Template" Value="{StaticResource SliderVertical}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="UICoverStyle" TargetType="{x:Type Button}">
+            <Setter Property="BorderThickness" Value="0,4,0,4"/>
+            <Setter Property="BorderBrush" Value="{StaticResource GrayRegular}"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="None"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" Padding="{TemplateBinding Padding}"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="Auto" MinHeight="178"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <!-- TOOLBAR -->
+
+        <StackPanel x:Name="Toolbar" 
+                    Background="White" 
+                    FlowDirection="RightToLeft" 
+                    Orientation="Horizontal" 
+                    Grid.Column="2" 
+                    Grid.Row="0" Margin="224,0,0,0">
+            <Button x:Name="btnClose" 
+                    Style="{StaticResource CloseButtonStyle}" 
+                    Content="╳" 
+                    Width="20" 
+                    Height="20" 
+                    FontSize="10" 
+                    FontFamily="Century Gothic" Click="btnClose_Click"/>
+            <Button x:Name="btnMinimize" 
+                    Style="{StaticResource MinimizeButtonStyle}" 
+                    Content="—" 
+                    Width="20" 
+                    Height="20" 
+                    FontSize="10" 
+                    FontFamily="Century Gothic" Click="btnMinimize_Click"/>
+        </StackPanel>
+
+        <!-- PEOPLE COUNT -->
+        <Button x:Name="ContainerPeopleCount" 
+                Style="{StaticResource ContainerMain}" 
+                FontSize="14" 
+                Margin="36,18,15,29" 
+                Grid.Row="1"/>
+
+        <Label Content="PERSONS INSIDE" 
+               FontFamily="{StaticResource Montserrat}"
+               FontWeight="Bold"
+               FontSize="14"
+               Foreground="{StaticResource MainColorGray2}"
+               VerticalContentAlignment="Center"
+               HorizontalContentAlignment="Center" 
+               Margin="75,151,54,0" 
+               Grid.Column="0"
+               Grid.Row="1" 
+               Grid.RowSpan="2" 
+               Height="29" 
+               VerticalAlignment="Top" />
+
+        <Image HorizontalAlignment="Left" 
+               Height="75" 
+               Margin="51,0,0,55" 
+               Grid.Row="1" 
+               VerticalAlignment="Bottom" 
+               Width="73" 
+               Source="/assets/images/peoplecount.png" 
+               RenderTransformOrigin="7.5,1.177"/>
+
+        <Label x:Name="lblPeopleCount"
+               Content="{Binding PeopleCount, Mode=OneWay}" 
+               FontFamily="{StaticResource Montserrat}"
+               FontWeight="Bold"
+               FontSize="60"
+               Foreground="{StaticResource MainColorGray2}"
+               VerticalContentAlignment="Center"
+               HorizontalContentAlignment="Center" 
+               Margin="124,0,15,34"
+               Grid.Row="1" 
+               Height="99" 
+               VerticalAlignment="Bottom" />
+
+        <Label Content="X" 
+               FontFamily="{StaticResource Montserrat}"
+               FontWeight="Bold"
+               FontSize="15"
+               Foreground="{StaticResource MainColorGray2}"
+               VerticalContentAlignment="Center"
+               HorizontalContentAlignment="Center" 
+               Margin="225,0,15,84" 
+               Grid.Row="1" 
+               Height="29" 
+               VerticalAlignment="Bottom"/>
+
+        <!-- ROOM TEMPERATURE -->
+        <Button x:Name="ContainerTemperature" 
+                Style="{StaticResource ContainerMain}" 
+                FontSize="14" 
+                Margin="26,40,25,29"
+                Grid.Row="1"
+                Grid.Column="1"/>
+
+        <Label Content="ROOM TEMPERATURE" 
+               FontFamily="{StaticResource Montserrat}"
+               FontWeight="Bold"
+               FontSize="14"
+               Foreground="{DynamicResource MainColorGray2}"
+               VerticalContentAlignment="Center"
+               HorizontalContentAlignment="Center" Margin="48,154,48,0" 
+               Grid.Row="1"
+               Grid.Column="1" 
+               Grid.RowSpan="2" 
+               Height="26" 
+               VerticalAlignment="Top"/>
+
+        <Image HorizontalAlignment="Left" 
+               Height="78" 
+               Margin="41,0,0,52" 
+               Grid.Row="1" 
+               VerticalAlignment="Bottom" 
+               Width="77" 
+               Source="/assets/images/temperature.png" 
+               RenderTransformOrigin="7.5,1.177" 
+               Grid.Column="1"/>
+
+        <Label x:Name="lblRoomTemperature"
+               Content="{Binding Temperature, Mode=OneWay}" 
+               FontFamily="{StaticResource Montserrat}"
+               FontWeight="Bold"
+               FontSize="60"
+               Foreground="{StaticResource MainColorGray2}"
+               VerticalContentAlignment="Center"
+               HorizontalContentAlignment="Center" 
+               Margin="106,0,25,34"
+               Grid.Row="1" 
+               Grid.Column="1" 
+               Height="99" 
+               VerticalAlignment="Bottom" />
+
+        <Label Content="°C" 
+               FontFamily="{StaticResource Montserrat}"
+               FontWeight="Bold"
+               FontSize="15"
+               Foreground="{StaticResource MainColorGray2}"
+               VerticalContentAlignment="Center"
+               HorizontalContentAlignment="Center" 
+               Margin="212,0,28,84" 
+               Grid.Row="1"
+               Grid.Column="1" 
+               Height="29" 
+               VerticalAlignment="Bottom"/>
+
+
+        <!-- FAN SPEED -->
+        <Button x:Name="ContainerFanSpeed" 
+                Style="{StaticResource ContainerMain}" 
+                FontSize="14" 
+                Margin="16,25,35,0"
+                Grid.Row="1"
+                Grid.Column="2" 
+                Height="124" 
+                VerticalAlignment="Top"/>
+
+        <Label Content="FAN SPEED" 
+               FontFamily="{StaticResource Montserrat}"
+               FontWeight="Bold"
+               FontSize="14"
+               Foreground="{StaticResource MainColorGray2}"
+               VerticalContentAlignment="Center"
+               HorizontalContentAlignment="Center" 
+               Margin="61,154,81,0" 
+               Grid.Row="1"
+               Grid.Column="2" 
+               Height="26" 
+               VerticalAlignment="Top" 
+               Grid.RowSpan="2"/>
+
+        <Image HorizontalAlignment="Left" 
+               Height="78" 
+               Margin="31,0,0,52" 
+               Grid.Row="1" 
+               VerticalAlignment="Bottom" 
+               Width="76" 
+               Source="/assets/images/fanspeed.png" 
+               RenderTransformOrigin="7.5,1.177" 
+               Grid.Column="2"/>
+
+        <Label x:Name="lblFanSpeed"
+               Content="{Binding FanSpeed, Mode=OneWay}" 
+               FontFamily="{StaticResource Montserrat}"
+               FontWeight="Bold"
+               FontSize="60"
+               Foreground="{StaticResource MainColorGray2}"
+               VerticalContentAlignment="Center"
+               HorizontalContentAlignment="Center" 
+               Margin="98,0,35,34"
+               Grid.Row="1" 
+               Grid.Column="2" 
+               Height="99" 
+               VerticalAlignment="Bottom" />
+
+        <Label Content="%" 
+               FontFamily="{StaticResource Montserrat}"
+               FontWeight="Bold"
+               FontSize="15"
+               Foreground="{StaticResource MainColorGray2}"
+               VerticalContentAlignment="Center"
+               HorizontalContentAlignment="Center" 
+               Margin="205,0,35,84" 
+               Grid.Row="1"
+               Grid.Column="2" 
+               Height="29" 
+               VerticalAlignment="Bottom"/>
+
+
+        <!-- SET CONTROLLER MODE -->
+        <Button x:Name="ContainerMode" 
+                Style="{StaticResource ContainerSubControls}" 
+                FontSize="14" 
+                Margin="36,57,15,31" 
+                Grid.Row="2"/>
+
+        <Label Content="Set Controller Mode" 
+               FontFamily="{StaticResource Montserrat}"
+               FontWeight="SemiBold"
+               Foreground="{StaticResource MainColorGray2}"
+               VerticalContentAlignment="Center"
+               HorizontalContentAlignment="Center" 
+               Margin="36,69,15,0" 
+               Grid.Column="0"
+               Grid.Row="2" 
+               Height="24" 
+               VerticalAlignment="Top" />
+
+        <Viewbox Grid.Row="2"
+                 Cursor="Hand" 
+                 Margin="82,119,153,157">
+            <RadioButton x:Name="radioAutoMode"
+                         IsChecked="{Binding Path=IsAutoMode, Mode=TwoWay}" 
+                         Cursor="Hand" 
+                         BorderThickness="3,3,3,3"  
+                         BorderBrush="{DynamicResource BrandBlue}" 
+                         Foreground="{DynamicResource BrandBlue}" 
+                         Width="18" Checked="radioAutoMode_Checked"/>
+        </Viewbox>
+
+        <Viewbox Grid.Row="2"
+                 Cursor="Hand" 
+                 Margin="176,119,60,157">
+            <RadioButton x:Name="radioManualMode"
+                         IsChecked="{Binding Path=IsManualMode, Mode=TwoWay}" 
+                         Cursor="Hand" 
+                         BorderThickness="3,3,3,3"  
+                         BorderBrush="{DynamicResource BrandBlue}" 
+                         Foreground="{DynamicResource BrandBlue}" 
+                         Width="18" Checked="radioManualMode_Checked"/>
+        </Viewbox>
+
+        <Label Content="AUTO" 
+               FontFamily="{StaticResource Montserrat}"
+               Foreground="{StaticResource MainColorGray2}"
+               VerticalContentAlignment="Center"
+               HorizontalContentAlignment="Center" 
+               Margin="71,158,140,0" 
+               Grid.Column="0"
+               Grid.Row="2" 
+               Height="24" 
+               VerticalAlignment="Top" 
+               FontWeight="Bold" />
+
+        <Label Content="MANUAL" 
+               FontFamily="{StaticResource Montserrat}"
+               Foreground="{StaticResource MainColorGray2}"
+               VerticalContentAlignment="Center"
+               HorizontalContentAlignment="Center" 
+               Margin="158,158,41,0" 
+               Grid.Column="0"
+               Grid.Row="2" 
+               Height="24" 
+               VerticalAlignment="Top" 
+               FontWeight="Bold" />
+
+        <TextBlock Text="Fan turns on according to the set activation temperature." 
+                   TextWrapping="Wrap"
+                   FontFamily="{DynamicResource SourceSansPro}"
+                   FontWeight="Normal"
+                   TextAlignment="Center"
+                   Margin="66,204,137,0" 
+                   Grid.Column="0"
+                   Grid.Row="2" 
+                   Height="49" 
+                   VerticalAlignment="Top" 
+                   FontSize="9" 
+                   Foreground="#FF8188A2" />
+
+        <TextBlock Text="Control the speed of the fan regardless of the temperature." 
+                   TextWrapping="Wrap"
+                   FontFamily="{DynamicResource SourceSansPro}"
+                   FontWeight="Normal"
+                   TextAlignment="Center"
+                   Margin="160,204,44,0" 
+                   Grid.Column="0"
+                   Grid.Row="2" 
+                   Height="49" 
+                   VerticalAlignment="Top" 
+                   FontSize="9" 
+                   Foreground="#FF8188A2" />
+
+        <!-- SET ACTIVATION TEMPERATURE -->
+        <Button Style="{StaticResource ContainerSubControls}" 
+                FontSize="14" 
+                Margin="26,58,25,148" 
+                Grid.Row="2" 
+                Grid.Column="1"/>
+
+        <Label Content="Set Activation Temperature" 
+               FontFamily="{StaticResource Montserrat}"
+               FontWeight="SemiBold"
+               Foreground="{StaticResource MainColorGray2}"
+               VerticalContentAlignment="Center"
+               HorizontalContentAlignment="Center" 
+               Margin="26,70,25,0" 
+               Grid.Column="1"
+               Grid.Row="2" 
+               Height="24" 
+               VerticalAlignment="Top" />
+
+        <Button x:Name="btnMinusTemperature"
+                Style="{StaticResource ScaleButtonTemp}" 
+                Content="⮜" 
+                Margin="48,110,192,169" 
+                Grid.Row="2" 
+                Height="28" 
+                Grid.Column="1" Click="btnMinusTemperature_Click"/>
+
+        <Button x:Name="btnAddTemperature"
+                Style="{StaticResource ScaleButtonTemp}" 
+                Content="⮞" 
+                Margin="193,110,48,169" 
+                Grid.Row="2" 
+                Height="28" 
+                Grid.Column="1" Click="btnAddTemperature_Click"/>
+
+        <TextBox x:Name="lblActivationTemperature"
+                   Text="{Binding ActivationTemp, Mode=TwoWay}" 
+                   FontFamily="{StaticResource Montserrat}"
+                   Foreground="{StaticResource MainColorGray2}"
+                   TextAlignment="Center"
+                   Margin="113,110,113,0" 
+                   Grid.Column="1"
+                   Grid.Row="2" 
+                   Height="40" 
+                   VerticalAlignment="Top" 
+                   FontWeight="Bold" 
+                   FontSize="24" BorderBrush="White" BorderThickness="0,0,0,0" PreviewTextInput="lblActivationTemperature_PreviewTextInput" />
+
+        <Label Content="°C" 
+               FontFamily="{StaticResource Montserrat}"
+               FontWeight="Bold"
+               Foreground="{StaticResource MainColorGray2}"
+               VerticalContentAlignment="Center"
+               HorizontalContentAlignment="Center" 
+               Margin="148,0,98,179" 
+               Grid.Row="2"
+               Grid.Column="1" 
+               Height="24" 
+               VerticalAlignment="Bottom" 
+               FontSize="10"/>
+
+        <!-- SET START FAN SPEED -->
+        <Button Style="{StaticResource ContainerSubControls}" 
+                FontSize="14" 
+                Margin="26,175,25,31" 
+                Grid.Row="2" 
+                Grid.Column="1"/>
+
+        <Label Content="Set Start Fan Speed" 
+               FontFamily="{StaticResource Montserrat}"
+               FontWeight="SemiBold"
+               Foreground="{StaticResource MainColorGray2}"
+               VerticalContentAlignment="Center"
+               HorizontalContentAlignment="Center" 
+               Margin="26,187,25,0" 
+               Grid.Column="1"
+               Grid.Row="2" 
+               Height="24" 
+               VerticalAlignment="Top" />
+
+        <Button x:Name="btnMinusStartFanSpeed"
+                Style="{StaticResource ScaleButtonFan}" 
+                Content="⮜" 
+                Margin="48,227,191,52" 
+                Grid.Row="2" 
+                Height="28" 
+                Grid.Column="1" Click="btnMinusStartFanSpeed_Click"/>
+
+        <Button x:Name="btnAddStartFanSpeed"
+                Style="{StaticResource ScaleButtonFan}" 
+                Content="⮞" 
+                Margin="193,227,47,52" 
+                Grid.Row="2" 
+                Height="28" 
+                Grid.Column="1" Click="btnAddStartFanSpeed_Click"/>
+
+        <TextBox x:Name="lblStartFanSpeed"
+                   Text="{Binding StartFanSpeed, Mode=TwoWay}" 
+                   FontFamily="{StaticResource Montserrat}"
+                   Foreground="{StaticResource MainColorGray2}"
+                   TextAlignment="Center"
+                   Margin="112,226,111,0" 
+                   Grid.Column="1"
+                   Grid.Row="2" 
+                   Height="40" 
+                   VerticalAlignment="Top" 
+                   FontWeight="Bold" 
+                   FontSize="24" BorderBrush="White" BorderThickness="0,0,0,0" PreviewTextInput="lblStartFanSpeed_PreviewTextInput" />
+
+        <Label Content="%" 
+               FontFamily="{StaticResource Montserrat}"
+               FontWeight="Bold"
+               Foreground="{StaticResource MainColorGray2}"
+               VerticalContentAlignment="Center"
+               HorizontalContentAlignment="Center" 
+               Margin="150,0,98,62" 
+               Grid.Row="2"
+               Grid.Column="1" 
+               Height="24" 
+               VerticalAlignment="Bottom" 
+               FontSize="10"/>
+
+        <!-- SET FAN SPEED (Manual Mode) -->
+        <Button x:Name="ContainerMode_Copy2" 
+                Style="{StaticResource ContainerSubControls}" 
+                FontSize="14" 
+                Margin="16,58,35,31" 
+                Grid.Row="2" 
+                Grid.Column="2"/>
+
+        <Label Content="Set Fan Speed" 
+               FontFamily="{StaticResource Montserrat}"
+               FontWeight="SemiBold"
+               Foreground="{StaticResource MainColorGray2}"
+               VerticalContentAlignment="Center"
+               HorizontalContentAlignment="Center" 
+               Margin="16,70,35,0" 
+               Grid.Column="2"
+               Grid.Row="2" 
+               Height="24" 
+               VerticalAlignment="Top" />
+
+        <TextBlock Text="Available in Manual mode only." 
+                   TextWrapping="Wrap"
+                   FontFamily="{DynamicResource SourceSansPro}"
+                   FontWeight="Normal"
+                   TextAlignment="Center"
+                   Margin="46,94,65,0" 
+                   Grid.Column="2"
+                   Grid.Row="2" 
+                   Height="15" 
+                   VerticalAlignment="Top" 
+                   FontSize="9" 
+                   Foreground="#FF8188A2" />
+
+        <Slider x:Name="sliderFanSpeed"
+                Value="{Binding FanSpeed, Mode=TwoWay}"
+                Style="{DynamicResource SliderStyle}" 
+                Grid.Column="2" 
+                HorizontalAlignment="Left" 
+                Margin="38,130,0,0" 
+                Grid.Row="2" 
+                VerticalAlignment="Top" 
+                Width="173" 
+                BorderBrush="{DynamicResource BrandGreen}" 
+                Foreground="{DynamicResource BrandGreen}" Maximum="99" LargeChange="10"/>
+
+        <Button x:Name="btnFanSpeed_Off"
+                Style="{StaticResource ScaleButtonFan2}" 
+                Content="0FF" 
+                Margin="40,175,199,104" 
+                Grid.Row="2" 
+                Height="28" 
+                Grid.Column="2" Click="btnFanSpeed_Off_Click" />
+
+        <Button x:Name="btnFanSpeed_Max"
+                Style="{StaticResource ScaleButtonFan2}" 
+                Content="MAX" 
+                Margin="40,225,199,54" 
+                Grid.Row="2" 
+                Height="28" 
+                Grid.Column="2" Click="btnFanSpeed_Max_Click" />
+
+        <Button Style="{StaticResource ScaleButtonFan2}" 
+                Content="30" 
+                Margin="120,175,120,104" 
+                Grid.Row="2" 
+                Height="28" 
+                Grid.Column="2" Click="btnFanSpeed_30_Click"/>
+
+        <Button x:Name="btnFanSpeed_70"
+                Style="{StaticResource ScaleButtonFan2}" 
+                Content="70" 
+                Margin="120,225,120,54" 
+                Grid.Row="2" 
+                Height="28" 
+                Grid.Column="2" Click="btnFanSpeed_70_Click"/>
+
+        <Button x:Name="btnFanSpeed_50"
+                Style="{StaticResource ScaleButtonFan2}" 
+                Content="50" 
+                Margin="175,175,65,104" 
+                Grid.Row="2" 
+                Height="28" 
+                Grid.Column="2" Click="btnFanSpeed_50_Click"/>
+
+        <Button x:Name="btnFanSpeed_90" 
+                Style="{StaticResource ScaleButtonFan2}" 
+                Content="90" 
+                Margin="175,225,65,54" 
+                Grid.Row="2" 
+                Height="28" 
+                Grid.Column="2" Click="btnFanSpeed_90_Click"/>
+
+        <Rectangle x:Name="coverSetFanSpeed"
+                   Grid.Column="2" 
+                   HorizontalAlignment="Left" 
+                   Height="218" 
+                   Margin="16,58,0,0" 
+                   Grid.Row="2" 
+                   VerticalAlignment="Top" 
+                   Width="217" 
+                   Fill="#FFC4C9CF" 
+                   RadiusX="8.646" 
+                   RadiusY="8.646" 
+                   Opacity="0.7">
+            <Rectangle.Style>
+                <Style TargetType="Rectangle">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsManualMode}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=IsManualMode}" Value="False">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Rectangle.Style>
+        </Rectangle>
+
+        <Rectangle x:Name="coverSetActivationTemp"
+            Grid.Column="1" 
+            HorizontalAlignment="Center" 
+            Height="101" 
+            Margin="0,58,0,0" 
+            Grid.Row="2" 
+            VerticalAlignment="Top" 
+            Width="218" 
+            Fill="#FFC4C9CF" 
+            RadiusX="8.646" 
+            RadiusY="8.646" 
+            Opacity="0.7">
+            <Rectangle.Style>
+                <Style TargetType="{x:Type Rectangle}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsAutoMode}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsAutoMode}" Value="False">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Rectangle.Style>
+        </Rectangle>
+
+        <Rectangle x:Name="coverSetStartFanSpeed"
+            Grid.Column="1" 
+            HorizontalAlignment="Center" 
+            Height="101" 
+            Margin="0,175,0,0" 
+            Grid.Row="2" 
+            VerticalAlignment="Top" 
+            Width="218" 
+            Fill="#FFC4C9CF" 
+            RadiusX="8.646" 
+            RadiusY="8.646" 
+            Opacity="0.7">
+            <Rectangle.Style>
+                <Style TargetType="{x:Type Rectangle}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsAutoMode}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsAutoMode}" Value="False">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Rectangle.Style>
+        </Rectangle>
+        <Label FontFamily="{StaticResource Montserrat}"
+               FontWeight="Normal"
+               FontSize="8"
+               Foreground="{DynamicResource GrayDark}"
+               VerticalContentAlignment="Center"
+               HorizontalContentAlignment="Left" 
+               Margin="18,2,101,0"
+               Grid.Column="0"
+               Grid.Row="0">
+            <Label.Style>
+                <Style TargetType="{x:Type Label}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsAutoMode}" Value="True">
+                            <Setter Property="Content" Value="Fan Controller - Auto Mode"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsAutoMode}" Value="False">
+                            <Setter Property="Content" Value="Fan Controller - Manual Mode"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Label.Style>
+        </Label>
+        <Image Source="/assets/images/settings.png" 
+               Margin="4,4,250,2"
+               Grid.Column="0"
+               Grid.Row="0"/>
+
+        <!-- UI Cover -->
+        <Border x:Name="coverWhole"
+                HorizontalAlignment="Left" 
+                Height="429" 
+                Margin="36,25,0,0" 
+                Grid.Row="1" 
+                BorderBrush="{DynamicResource GrayRegular}" 
+                VerticalAlignment="Top" 
+                Width="735" 
+                Background="{DynamicResource White}" 
+                CornerRadius="6"
+                Grid.RowSpan="2" 
+                Grid.ColumnSpan="3"
+                BorderThickness="0,4,0,4">
+            <Grid>
+
+            </Grid>
+        </Border>
+
+        <Image Grid.Column="1" 
+               HorizontalAlignment="Center" 
+               Height="56" 
+               Margin="0,154,0,0" 
+               Grid.RowSpan="2" 
+               VerticalAlignment="Top" 
+               Width="56" 
+               Grid.Row="1">
+            <Image.Style>
+                <Style TargetType="Image">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsConnected}" Value="True">
+                            <Setter Property="Source" Value="/assets/images/connected.png"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsConnected}" Value="False">
+                            <Setter Property="Source" Value="/assets/images/disconnected.png"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsSearchingPort}" Value="True">
+                            <Setter Property="Source" Value="/assets/images/search.png"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsPortFound}" Value="False">
+                            <Setter Property="Source" Value="/assets/images/notfound.png"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Image.Style>
+        </Image>
+
+        <Label HorizontalAlignment="Center" 
+               Margin="0,58,0,0" 
+               VerticalAlignment="Top" 
+               Grid.Column="1" 
+               Grid.Row="2" 
+               Foreground="{DynamicResource MainColorGray}" 
+               FontFamily="{DynamicResource Montserrat}" 
+               FontWeight="Bold">
+            <Label.Style>
+                <Style TargetType="Label">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsConnected}" Value="True">
+                            <Setter Property="Content" Value="CONNECTED"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsConnected}" Value="False">
+                            <Setter Property="Content" Value="DISCONNECTED"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsSearchingPort}" Value="True">
+                            <Setter Property="Content" Value="SEARCHING PORT..."/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsPortFound}" Value="False">
+                            <Setter Property="Content" Value="PORT NOT FOUND"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Label.Style>
+        </Label>
+
+        <TextBlock TextWrapping="Wrap"
+                   FontFamily="{DynamicResource SourceSansPro}"
+                   FontWeight="Normal"
+                   TextAlignment="Center"
+                   Margin="268,87,268,0"
+                   Grid.Row="2" 
+                   Height="18" 
+                   VerticalAlignment="Top" 
+                   FontSize="10" 
+                   Foreground="#FF8188A2" Grid.ColumnSpan="3">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsConnected}" Value="True">
+                            <Setter Property="Text" Value="Controller connected successfully."/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsConnected}" Value="False">
+                            <Setter Property="Text" Value="Controller was disconnected. Please reconnect."/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsSearchingPort}" Value="True">
+                            <Setter Property="Text" Value="Detecing port and connecting to the controller."/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsPortFound}" Value="False">
+                            <Setter Property="Text" Value="Controller cannot be detected."/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+    </Grid>
+</Window>

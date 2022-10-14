@@ -1,0 +1,42 @@
+﻿<Application x:Class="Automatic_Fan_Controller.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Automatic_Fan_Controller"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+
+        <FontFamily x:Key="Montserrat">pack://application:,,,/assets/fonts/Montserrat/#Montserrat</FontFamily>
+        <FontFamily x:Key="SourceSansPro">pack://application:,,,/assets/fonts/Source_Sans_Pro/#Source Sans Pro</FontFamily>
+
+        <Brush x:Key="BrandBlue">#4fa9d2</Brush>
+        <Brush x:Key="BrandGreen">#5bb381</Brush>
+        <Brush x:Key="BrandGreenHover">#51a174</Brush>
+        <Brush x:Key="BrandGreenPressed">#488f67</Brush>
+        <Brush x:Key="BrandRed">#df6756</Brush>
+        <Brush x:Key="BrandRedHover">#c85c4d</Brush>
+        <Brush x:Key="BrandRedPressed">#b25244</Brush>
+
+        <Brush x:Key="White">#FFFFFF</Brush>
+        <Brush x:Key="GreenLight">#7ac968</Brush>
+        <Brush x:Key="GreenDark">#4ca456</Brush>
+        <Brush x:Key="MainColorGray">#333333</Brush>
+        <Brush x:Key="MainColorGray2">#394141</Brush>
+        <Brush x:Key="MainColorDark">#083e77</Brush>
+        <Brush x:Key="BlueDark">#231F20</Brush>
+        <Brush x:Key="BlueMedium">#404040</Brush>
+        <Brush x:Key="BlueFaint">#0F1419</Brush>
+        <Brush x:Key="RedIdle">#FF2525</Brush>
+        <Brush x:Key="RedPressed">#C91A1A</Brush>
+        <Brush x:Key="BlueGray">#313F4F</Brush>
+        <Brush x:Key="GrayDark">#98a3ab</Brush>
+        <Brush x:Key="GrayRegular">#c4c9cf</Brush>
+        <Brush x:Key="GrayMedium">#e9edf1</Brush>
+        <Brush x:Key="GrayLow">#fafcff</Brush>
+        <Brush x:Key="GrayFaint">#F0F2F5</Brush>
+        <Brush x:Key="ErrorFaint">#ffe6e6</Brush>
+        <Brush x:Key="ErrorMedium">#fab9d0</Brush>
+        <Brush x:Key="ErrorMediumHover">#fcdcdc</Brush>
+        <Brush x:Key="ErrorRegular">#ff4576</Brush>
+
+    </Application.Resources>
+</Application>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO.Ports;
 using System.Linq;
 using System.Management;
 using System.Text;
@@ -10,8 +11,7 @@ namespace Automatic_Fan_Controller
 {
     public  class Controller : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
-
+        private SerialPort _serialPort = new();
         private bool _isAutoMode = true;
         private bool _isManualMode = false;
         private bool _isSearchingPort = true;
@@ -22,6 +22,11 @@ namespace Automatic_Fan_Controller
         private int _activationTemp = 25;
         private int _fanSpeed = 0;
         private int _startFanSpeed = 50;
+
+        public Controller()
+        {
+            _serialPort.DataReceived += new SerialDataReceivedEventHandler(SerialPort_DataReceived);
+        }
 
         public bool IsAutoMode
         {
@@ -126,7 +131,32 @@ namespace Automatic_Fan_Controller
             }
         }
 
-        public string? GetArduinoPort()
+        public async void ConnectArduinoPortAsync()
+        {
+            IsSearchingPort = true;
+            await Task.Delay(3000);
+
+            string? arduinoPort = GetArduinoPort();
+
+            if (arduinoPort is not null)
+            {
+                _serialPort.PortName = arduinoPort;
+                _serialPort.BaudRate = 9600;
+                _serialPort.Open();
+
+                IsPortFound = true;
+                IsConnected = true;
+            }
+            else
+            {
+                IsPortFound = false;
+                IsConnected = false;
+            }
+
+            IsSearchingPort = false;
+        }
+
+        private static string? GetArduinoPort()
         {
             ManagementScope connectionScope = new();
             SelectQuery serialQuery = new("SELECT * FROM Win32_SerialPort");
@@ -146,10 +176,16 @@ namespace Automatic_Fan_Controller
             }
             catch (ManagementException)
             {
-                /* Do Nothing */
+                // Do nothing 
             }
 
             return null;
+        }
+
+        private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            string serialData = _serialPort.ReadLine();
+            ParseDataFromSerial(serialData);
         }
 
         public void ParseDataFromSerial(string serialData)
@@ -166,15 +202,16 @@ namespace Automatic_Fan_Controller
              *      Start Fan Speed = 50
              */
 
-            IsAutoMode = serialData[..1] == "A";
             PeopleCount = int.Parse(serialData.Substring(1, 2));
             Temperature = int.Parse(serialData.Substring(3, 2));
             FanSpeed = int.Parse(serialData.Substring(5, 2));
 
+            //IsAutoMode = serialData[..1] == "A";
             //ActivationTemp = int.Parse(serialData.Substring(7, 2));
             //StartFanSpeed = int.Parse(serialData.Substring(9, 2));
         }
 
+        public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));

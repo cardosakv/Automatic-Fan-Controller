@@ -20,7 +20,6 @@ namespace Automatic_Fan_Controller
     public partial class MainWindow : Window
     {
         private readonly Controller _controller = new();
-        private readonly SerialPort _serialPort = new();
 
         public MainWindow()
         {
@@ -30,35 +29,7 @@ namespace Automatic_Fan_Controller
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             DataContext = _controller;
-
-            _serialPort.DataReceived += new SerialDataReceivedEventHandler(SerialPort_DataReceived);
-            ConnectArduinoPortAsync();
-        }
-
-        private async void ConnectArduinoPortAsync()
-        {
-            _controller.IsSearchingPort = true;
-            await Task.Delay(3000);
-
-            string? arduinoPort = _controller.GetArduinoPort();
-
-            if (arduinoPort is not null)
-            {
-                _serialPort.PortName = arduinoPort;
-                _serialPort.BaudRate = 9600;
-                _serialPort.Open();
-
-                _controller.IsPortFound = true;
-                _controller.IsConnected = true;
-            }
-
-            _controller.IsSearchingPort = false;
-        }
-
-        private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
-        {
-            string serialData = _serialPort.ReadLine();
-            _controller.ParseDataFromSerial(serialData);
+            _controller.ConnectArduinoPortAsync();
         }
 
         private void RadioAutoMode_Checked(object sender, RoutedEventArgs e)

@@ -154,7 +154,25 @@ namespace Automatic_Fan_Controller
 
         public void ParseDataFromSerial(string serialData)
         {
+            /*  Serial Data Format: A0536802550
+             * 
+             *  1st Character: Mode = "A" or "M"
+             *  
+             *  By 2 digits in order:
+             *      People Count = 05
+             *      Temperature = 36
+             *      Fan Speed = 80
+             *      Activation Temp = 25
+             *      Start Fan Speed = 50
+             */
 
+            IsAutoMode = serialData[..1] == "A";
+            PeopleCount = int.Parse(serialData.Substring(1, 2));
+            Temperature = int.Parse(serialData.Substring(3, 2));
+            FanSpeed = int.Parse(serialData.Substring(5, 2));
+
+            //ActivationTemp = int.Parse(serialData.Substring(7, 2));
+            //StartFanSpeed = int.Parse(serialData.Substring(9, 2));
         }
 
         protected void OnPropertyChanged(string name)

@@ -521,14 +521,14 @@
                     Width="20" 
                     Height="20" 
                     FontSize="10" 
-                    FontFamily="Century Gothic" Click="btnClose_Click"/>
+                    FontFamily="Century Gothic" Click="BtnClose_Click"/>
             <Button x:Name="btnMinimize" 
                     Style="{StaticResource MinimizeButtonStyle}" 
                     Content="—" 
                     Width="20" 
                     Height="20" 
                     FontSize="10" 
-                    FontFamily="Century Gothic" Click="btnMinimize_Click"/>
+                    FontFamily="Century Gothic" Click="BtnMinimize_Click"/>
         </StackPanel>
 
         <!-- PEOPLE COUNT -->
@@ -735,7 +735,7 @@
                          BorderThickness="3,3,3,3"  
                          BorderBrush="{DynamicResource BrandBlue}" 
                          Foreground="{DynamicResource BrandBlue}" 
-                         Width="18" Checked="radioAutoMode_Checked"/>
+                         Width="18" Checked="RadioAutoMode_Checked"/>
         </Viewbox>
 
         <Viewbox Grid.Row="2"
@@ -747,7 +747,7 @@
                          BorderThickness="3,3,3,3"  
                          BorderBrush="{DynamicResource BrandBlue}" 
                          Foreground="{DynamicResource BrandBlue}" 
-                         Width="18" Checked="radioManualMode_Checked"/>
+                         Width="18" Checked="RadioManualMode_Checked"/>
         </Viewbox>
 
         <Label Content="AUTO" 
@@ -825,7 +825,7 @@
                 Margin="48,110,192,169" 
                 Grid.Row="2" 
                 Height="28" 
-                Grid.Column="1" Click="btnMinusTemperature_Click"/>
+                Grid.Column="1" Click="BtnMinusTemperature_Click"/>
 
         <Button x:Name="btnAddTemperature"
                 Style="{StaticResource ScaleButtonTemp}" 
@@ -833,7 +833,7 @@
                 Margin="193,110,48,169" 
                 Grid.Row="2" 
                 Height="28" 
-                Grid.Column="1" Click="btnAddTemperature_Click"/>
+                Grid.Column="1" Click="BtnAddTemperature_Click"/>
 
         <TextBox x:Name="lblActivationTemperature"
                    Text="{Binding ActivationTemp, Mode=TwoWay}" 
@@ -846,7 +846,7 @@
                    Height="40" 
                    VerticalAlignment="Top" 
                    FontWeight="Bold" 
-                   FontSize="24" BorderBrush="White" BorderThickness="0,0,0,0" PreviewTextInput="lblActivationTemperature_PreviewTextInput" />
+                   FontSize="24" BorderBrush="White" BorderThickness="0,0,0,0" PreviewTextInput="LblActivationTemperature_PreviewTextInput" />
 
         <Label Content="°C" 
                FontFamily="{StaticResource Montserrat}"
@@ -886,7 +886,7 @@
                 Margin="48,227,191,52" 
                 Grid.Row="2" 
                 Height="28" 
-                Grid.Column="1" Click="btnMinusStartFanSpeed_Click"/>
+                Grid.Column="1" Click="BtnMinusStartFanSpeed_Click"/>
 
         <Button x:Name="btnAddStartFanSpeed"
                 Style="{StaticResource ScaleButtonFan}" 
@@ -894,7 +894,7 @@
                 Margin="193,227,47,52" 
                 Grid.Row="2" 
                 Height="28" 
-                Grid.Column="1" Click="btnAddStartFanSpeed_Click"/>
+                Grid.Column="1" Click="BtnAddStartFanSpeed_Click"/>
 
         <TextBox x:Name="lblStartFanSpeed"
                    Text="{Binding StartFanSpeed, Mode=TwoWay}" 
@@ -907,7 +907,7 @@
                    Height="40" 
                    VerticalAlignment="Top" 
                    FontWeight="Bold" 
-                   FontSize="24" BorderBrush="White" BorderThickness="0,0,0,0" PreviewTextInput="lblStartFanSpeed_PreviewTextInput" />
+                   FontSize="24" BorderBrush="White" BorderThickness="0,0,0,0" PreviewTextInput="LblStartFanSpeed_PreviewTextInput" />
 
         <Label Content="%" 
                FontFamily="{StaticResource Montserrat}"
@@ -973,7 +973,7 @@
                 Margin="40,175,199,104" 
                 Grid.Row="2" 
                 Height="28" 
-                Grid.Column="2" Click="btnFanSpeed_Off_Click" />
+                Grid.Column="2" Click="BtnFanSpeed_Off_Click" />
 
         <Button x:Name="btnFanSpeed_Max"
                 Style="{StaticResource ScaleButtonFan2}" 
@@ -981,14 +981,14 @@
                 Margin="40,225,199,54" 
                 Grid.Row="2" 
                 Height="28" 
-                Grid.Column="2" Click="btnFanSpeed_Max_Click" />
+                Grid.Column="2" Click="BtnFanSpeed_Max_Click" />
 
         <Button Style="{StaticResource ScaleButtonFan2}" 
                 Content="30" 
                 Margin="120,175,120,104" 
                 Grid.Row="2" 
                 Height="28" 
-                Grid.Column="2" Click="btnFanSpeed_30_Click"/>
+                Grid.Column="2" Click="BtnFanSpeed_30_Click"/>
 
         <Button x:Name="btnFanSpeed_70"
                 Style="{StaticResource ScaleButtonFan2}" 
@@ -996,7 +996,7 @@
                 Margin="120,225,120,54" 
                 Grid.Row="2" 
                 Height="28" 
-                Grid.Column="2" Click="btnFanSpeed_70_Click"/>
+                Grid.Column="2" Click="BtnFanSpeed_70_Click"/>
 
         <Button x:Name="btnFanSpeed_50"
                 Style="{StaticResource ScaleButtonFan2}" 
@@ -1004,7 +1004,7 @@
                 Margin="175,175,65,104" 
                 Grid.Row="2" 
                 Height="28" 
-                Grid.Column="2" Click="btnFanSpeed_50_Click"/>
+                Grid.Column="2" Click="BtnFanSpeed_50_Click"/>
 
         <Button x:Name="btnFanSpeed_90" 
                 Style="{StaticResource ScaleButtonFan2}" 
@@ -1012,7 +1012,7 @@
                 Margin="175,225,65,54" 
                 Grid.Row="2" 
                 Height="28" 
-                Grid.Column="2" Click="btnFanSpeed_90_Click"/>
+                Grid.Column="2" Click="BtnFanSpeed_90_Click"/>
 
         <Rectangle x:Name="coverSetFanSpeed"
                    Grid.Column="2" 

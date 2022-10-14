@@ -31,7 +31,7 @@ namespace Automatic_Fan_Controller
         {
             DataContext = _controller;
 
-            _serialPort.DataReceived += new SerialDataReceivedEventHandler(_serialPort_DataReceived);
+            _serialPort.DataReceived += new SerialDataReceivedEventHandler(SerialPort_DataReceived);
             ConnectArduinoPortAsync();
         }
 
@@ -55,95 +55,94 @@ namespace Automatic_Fan_Controller
             _controller.IsSearchingPort = false;
         }
 
-        private void _serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            string controllerData = _serialPort.ReadLine();
-            _controller.ParseDataFromSerial(controllerData);
+            string serialData = _serialPort.ReadLine();
+            _controller.ParseDataFromSerial(serialData);
         }
 
-       
-        private void btnMinimize_Click(object sender, RoutedEventArgs e)
-        {
-            WindowState = WindowState.Minimized;
-        }
-
-        private void btnClose_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
-        private void radioAutoMode_Checked(object sender, RoutedEventArgs e)
+        private void RadioAutoMode_Checked(object sender, RoutedEventArgs e)
         {
             _controller.IsManualMode = false;
             _controller.IsAutoMode = true;
         }
 
-        private void radioManualMode_Checked(object sender, RoutedEventArgs e)
+        private void RadioManualMode_Checked(object sender, RoutedEventArgs e)
         {
             _controller.IsManualMode = true;
             _controller.IsAutoMode = false;
         }
 
-        private void btnMinusTemperature_Click(object sender, RoutedEventArgs e)
+        private void BtnMinusTemperature_Click(object sender, RoutedEventArgs e)
         {
             _controller.ActivationTemp--;
         }
 
-        private void btnAddTemperature_Click(object sender, RoutedEventArgs e)
+        private void BtnAddTemperature_Click(object sender, RoutedEventArgs e)
         {
             _controller.ActivationTemp++;
         }
 
-        private void btnMinusStartFanSpeed_Click(object sender, RoutedEventArgs e)
+        private void BtnMinusStartFanSpeed_Click(object sender, RoutedEventArgs e)
         {
             _controller.StartFanSpeed--;
         }
 
-        private void btnAddStartFanSpeed_Click(object sender, RoutedEventArgs e)
+        private void BtnAddStartFanSpeed_Click(object sender, RoutedEventArgs e)
         {
             _controller.StartFanSpeed++;
         }
 
-        private void btnFanSpeed_Off_Click(object sender, RoutedEventArgs e)
+        private void BtnFanSpeed_Off_Click(object sender, RoutedEventArgs e)
         {
             _controller.FanSpeed = 0;
         }
 
-        private void btnFanSpeed_Max_Click(object sender, RoutedEventArgs e)
+        private void BtnFanSpeed_Max_Click(object sender, RoutedEventArgs e)
         {
             _controller.FanSpeed = 99;
         }
 
-        private void btnFanSpeed_30_Click(object sender, RoutedEventArgs e)
+        private void BtnFanSpeed_30_Click(object sender, RoutedEventArgs e)
         {
             _controller.FanSpeed = 30;
         }
 
-        private void btnFanSpeed_50_Click(object sender, RoutedEventArgs e)
+        private void BtnFanSpeed_50_Click(object sender, RoutedEventArgs e)
         {
             _controller.FanSpeed = 50;
         }
 
-        private void btnFanSpeed_70_Click(object sender, RoutedEventArgs e)
+        private void BtnFanSpeed_70_Click(object sender, RoutedEventArgs e)
         {
             _controller.FanSpeed = 70;
         }
 
-        private void btnFanSpeed_90_Click(object sender, RoutedEventArgs e)
+        private void BtnFanSpeed_90_Click(object sender, RoutedEventArgs e)
         {
             _controller.FanSpeed = 90;
         }
 
-        private void lblStartFanSpeed_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void LblStartFanSpeed_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new("[^1-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
 
-        private void lblActivationTemperature_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void LblActivationTemperature_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void BtnMinimize_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void BtnClose_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

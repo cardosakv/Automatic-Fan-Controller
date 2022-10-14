@@ -11,7 +11,7 @@ namespace Automatic_Fan_Controller
 {
     public  class Controller : INotifyPropertyChanged
     {
-        private SerialPort _serialPort = new();
+        private readonly SerialPort _serialPort = new();
         private bool _isAutoMode = true;
         private bool _isManualMode = false;
         private bool _isSearchingPort = true;
@@ -35,6 +35,11 @@ namespace Automatic_Fan_Controller
             { 
                 _isAutoMode = value;
                 OnPropertyChanged("IsAutoMode");
+
+                if (_serialPort.IsOpen)
+                {
+                    _serialPort.WriteLine("Mode:01");
+                }
             }
         }
 
@@ -45,6 +50,11 @@ namespace Automatic_Fan_Controller
             {
                 _isManualMode = value;
                 OnPropertyChanged("IsManualMode");
+
+                if (_serialPort.IsOpen)
+                {
+                    _serialPort.WriteLine("Mode:02");
+                }
             }
         }
 
@@ -105,6 +115,11 @@ namespace Automatic_Fan_Controller
             { 
                 _activationTemp = value;
                 OnPropertyChanged("ActivationTemp");
+
+                if (_serialPort.IsOpen)
+                {
+                    _serialPort.WriteLine($"ActivationTemp:{ActivationTemp}");
+                }
             }
         }
 
@@ -127,6 +142,11 @@ namespace Automatic_Fan_Controller
                 {
                     _startFanSpeed = value;
                     OnPropertyChanged("StartFanSpeed");
+
+                    if (_serialPort.IsOpen)
+                    {
+                        _serialPort.WriteLine($"StartFanSpeed:{StartFanSpeed}");
+                    }
                 }
             }
         }
@@ -190,25 +210,32 @@ namespace Automatic_Fan_Controller
 
         public void ParseDataFromSerial(string serialData)
         {
-            /*  Serial Data Format: A0536802550
-             * 
-             *  1st Character: Mode = "A" or "M"
-             *  
-             *  By 2 digits in order:
-             *      People Count = 05
-             *      Temperature = 36
-             *      Fan Speed = 80
-             *      Activation Temp = 25
-             *      Start Fan Speed = 50
-             */
+            // Will receive only the temperature, fan speed,
+            // and person count data from the arduino.
+            //
+            // Data format:
+            //
+            //      FanSpeed:85
+            //      Temperature:32
+            //      PeopleCount:05
 
-            PeopleCount = int.Parse(serialData.Substring(1, 2));
-            Temperature = int.Parse(serialData.Substring(3, 2));
-            FanSpeed = int.Parse(serialData.Substring(5, 2));
+            string dataType = serialData[..serialData.IndexOf(":")];
+            int dataValue = int.Parse(serialData[(serialData.IndexOf(":") + 1)..]);
 
-            //IsAutoMode = serialData[..1] == "A";
-            //ActivationTemp = int.Parse(serialData.Substring(7, 2));
-            //StartFanSpeed = int.Parse(serialData.Substring(9, 2));
+            switch (dataType)
+            {
+                case "FanSpeed":
+                    FanSpeed = dataValue;
+                    break;
+
+                case "Temperature":
+                    Temperature = dataValue;
+                    break;
+
+                case "PeopleCount":
+                    PeopleCount = dataValue;
+                    break;
+            }
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

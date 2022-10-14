@@ -5,18 +5,23 @@ using System.IO.Ports;
 using System.Linq;
 using System.Management;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace Automatic_Fan_Controller
 {
     public  class Controller : INotifyPropertyChanged
     {
         private readonly SerialPort _serialPort = new();
+        private readonly DispatcherTimer _serialTimer = new();
+
         private bool _isAutoMode = true;
         private bool _isManualMode = false;
         private bool _isSearchingPort = true;
         private bool _isPortFound = true;
         private bool _isConnected = false;
+        private bool _isReady = false;
         private int _peopleCount = 0;
         private int _temperature = 0;
         private int _activationTemp = 25;
@@ -88,6 +93,16 @@ namespace Automatic_Fan_Controller
             }
         }
 
+        public bool IsReady
+        {
+            get { return _isReady; }
+            set
+            {
+                _isReady = value;
+                OnPropertyChanged("IsReady");
+            }
+        }
+
         public int PeopleCount
         {
             get { return _peopleCount; }
@@ -154,7 +169,7 @@ namespace Automatic_Fan_Controller
         public async void ConnectArduinoPortAsync()
         {
             IsSearchingPort = true;
-            await Task.Delay(3000);
+            await Task.Delay(5000);
 
             string? arduinoPort = GetArduinoPort();
 
@@ -166,14 +181,16 @@ namespace Automatic_Fan_Controller
 
                 IsPortFound = true;
                 IsConnected = true;
+                IsSearchingPort = false;
+                await Task.Delay(2000);
+                IsReady = true;
             }
             else
             {
                 IsPortFound = false;
                 IsConnected = false;
+                IsSearchingPort = false;
             }
-
-            IsSearchingPort = false;
         }
 
         private static string? GetArduinoPort()

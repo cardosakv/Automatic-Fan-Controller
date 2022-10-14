@@ -225,7 +225,7 @@ namespace Automatic_Fan_Controller
             ParseDataFromSerial(serialData);
         }
 
-        public void ParseDataFromSerial(string serialData)
+        private void ParseDataFromSerial(string serialData)
         {
             // Will receive only the temperature, fan speed,
             // and person count data from the arduino.

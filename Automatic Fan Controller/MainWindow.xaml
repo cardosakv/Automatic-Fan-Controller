@@ -513,8 +513,7 @@
                     Background="White" 
                     FlowDirection="RightToLeft" 
                     Orientation="Horizontal" 
-                    Grid.Column="2" 
-                    Grid.Row="0" Margin="224,0,0,0">
+                    Grid.Row="0" Grid.ColumnSpan="3" MouseDown="Toolbar_MouseDown">
             <Button x:Name="btnClose" 
                     Style="{StaticResource CloseButtonStyle}" 
                     Content="╳" 

@@ -115,5 +115,10 @@ namespace Automatic_Fan_Controller
         {
             Close();
         }
+
+        private void Toolbar_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
     }
 }

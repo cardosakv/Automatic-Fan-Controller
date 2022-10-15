@@ -114,7 +114,7 @@ namespace Automatic_Fan_Controller
 
         private void BtnClose_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            Environment.Exit(0);
         }
 
         private void Toolbar_MouseDown(object sender, MouseButtonEventArgs e)

@@ -8,13 +8,11 @@
         mc:Ignorable="d"
         Height="505" 
         Width="805"
-        ResizeMode="CanResize"
+        ResizeMode="NoResize"
         WindowStyle="None"
-        WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
-
-    <WindowChrome.WindowChrome>
-        <WindowChrome ResizeBorderThickness="0" CaptionHeight="0"/>
-    </WindowChrome.WindowChrome>
+        AllowsTransparency="True"
+        WindowStartupLocation="CenterScreen" 
+        Loaded="Window_Loaded">
 
     <Window.Style>
         <Style TargetType="Window">
@@ -25,6 +23,16 @@
                 <DataTrigger Binding="{Binding IsAutoMode}" Value="False">
                     <Setter Property="Title" Value="Fan Controller - Manual Mode"/>
                 </DataTrigger>
+                <EventTrigger RoutedEvent="Window.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard Name="FormFadeIn">
+                            <DoubleAnimation Name="FormFadeInAnimation"
+                                     Storyboard.TargetProperty="(Window.Opacity)"
+                                     From="0.0" To="1.0" Duration="0:0:0.3"
+                                     AutoReverse="False" RepeatBehavior="1x" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
             </Style.Triggers>
         </Style>
     </Window.Style>
@@ -495,49 +503,50 @@
 
     </Window.Resources>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="Auto" MinHeight="178"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
+    <Border BorderBrush="{StaticResource GrayDark}" BorderThickness="1">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="Auto" MinHeight="178"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
 
-        <!-- TOOLBAR -->
+            <!-- TOOLBAR -->
 
-        <StackPanel x:Name="Toolbar" 
+            <StackPanel x:Name="Toolbar" 
                     Background="White" 
                     FlowDirection="RightToLeft" 
                     Orientation="Horizontal" 
                     Grid.Row="0" Grid.ColumnSpan="3" MouseDown="Toolbar_MouseDown">
-            <Button x:Name="btnClose" 
+                <Button x:Name="btnClose" 
                     Style="{StaticResource CloseButtonStyle}" 
                     Content="╳" 
                     Width="20" 
                     Height="20" 
                     FontSize="10" 
                     FontFamily="Century Gothic" Click="BtnClose_Click"/>
-            <Button x:Name="btnMinimize" 
+                <Button x:Name="btnMinimize" 
                     Style="{StaticResource MinimizeButtonStyle}" 
                     Content="—" 
                     Width="20" 
                     Height="20" 
                     FontSize="10" 
                     FontFamily="Century Gothic" Click="BtnMinimize_Click"/>
-        </StackPanel>
+            </StackPanel>
 
-        <!-- PEOPLE COUNT -->
-        <Button x:Name="ContainerPeopleCount" 
+            <!-- PEOPLE COUNT -->
+            <Button x:Name="ContainerPeopleCount" 
                 Style="{StaticResource ContainerMain}" 
                 FontSize="14" 
                 Margin="36,18,15,29" 
                 Grid.Row="1"/>
 
-        <Label Content="PERSONS INSIDE" 
+            <Label Content="PERSONS INSIDE" 
                FontFamily="{StaticResource Montserrat}"
                FontWeight="Bold"
                FontSize="14"
@@ -551,7 +560,7 @@
                Height="29" 
                VerticalAlignment="Top" />
 
-        <Image HorizontalAlignment="Left" 
+            <Image HorizontalAlignment="Left" 
                Height="75" 
                Margin="51,0,0,55" 
                Grid.Row="1" 
@@ -560,7 +569,7 @@
                Source="/assets/images/peoplecount.png" 
                RenderTransformOrigin="7.5,1.177"/>
 
-        <Label x:Name="lblPeopleCount"
+            <Label x:Name="lblPeopleCount"
                Content="{Binding PeopleCount, Mode=OneWay}" 
                FontFamily="{StaticResource Montserrat}"
                FontWeight="Bold"
@@ -573,7 +582,7 @@
                Height="99" 
                VerticalAlignment="Bottom" />
 
-        <Label Content="X" 
+            <Label Content="X" 
                FontFamily="{StaticResource Montserrat}"
                FontWeight="Bold"
                FontSize="15"
@@ -585,15 +594,15 @@
                Height="29" 
                VerticalAlignment="Bottom"/>
 
-        <!-- ROOM TEMPERATURE -->
-        <Button x:Name="ContainerTemperature" 
+            <!-- ROOM TEMPERATURE -->
+            <Button x:Name="ContainerTemperature" 
                 Style="{StaticResource ContainerMain}" 
                 FontSize="14" 
                 Margin="26,40,25,29"
                 Grid.Row="1"
                 Grid.Column="1"/>
 
-        <Label Content="ROOM TEMPERATURE" 
+            <Label Content="ROOM TEMPERATURE" 
                FontFamily="{StaticResource Montserrat}"
                FontWeight="Bold"
                FontSize="14"
@@ -606,7 +615,7 @@
                Height="26" 
                VerticalAlignment="Top"/>
 
-        <Image HorizontalAlignment="Left" 
+            <Image HorizontalAlignment="Left" 
                Height="78" 
                Margin="41,0,0,52" 
                Grid.Row="1" 
@@ -616,7 +625,7 @@
                RenderTransformOrigin="7.5,1.177" 
                Grid.Column="1"/>
 
-        <Label x:Name="lblRoomTemperature"
+            <Label x:Name="lblRoomTemperature"
                Content="{Binding Temperature, Mode=OneWay}" 
                FontFamily="{StaticResource Montserrat}"
                FontWeight="Bold"
@@ -630,7 +639,7 @@
                Height="99" 
                VerticalAlignment="Bottom" />
 
-        <Label Content="°C" 
+            <Label Content="°C" 
                FontFamily="{StaticResource Montserrat}"
                FontWeight="Bold"
                FontSize="15"
@@ -644,8 +653,8 @@
                VerticalAlignment="Bottom"/>
 
 
-        <!-- FAN SPEED -->
-        <Button x:Name="ContainerFanSpeed" 
+            <!-- FAN SPEED -->
+            <Button x:Name="ContainerFanSpeed" 
                 Style="{StaticResource ContainerMain}" 
                 FontSize="14" 
                 Margin="16,25,35,0"
@@ -654,7 +663,7 @@
                 Height="124" 
                 VerticalAlignment="Top"/>
 
-        <Label Content="FAN SPEED" 
+            <Label Content="FAN SPEED" 
                FontFamily="{StaticResource Montserrat}"
                FontWeight="Bold"
                FontSize="14"
@@ -668,7 +677,7 @@
                VerticalAlignment="Top" 
                Grid.RowSpan="2"/>
 
-        <Image HorizontalAlignment="Left" 
+            <Image HorizontalAlignment="Left" 
                Height="78" 
                Margin="31,0,0,52" 
                Grid.Row="1" 
@@ -678,7 +687,7 @@
                RenderTransformOrigin="7.5,1.177" 
                Grid.Column="2"/>
 
-        <Label x:Name="lblFanSpeed"
+            <Label x:Name="lblFanSpeed"
                Content="{Binding FanSpeed, Mode=OneWay}" 
                FontFamily="{StaticResource Montserrat}"
                FontWeight="Bold"
@@ -692,7 +701,7 @@
                Height="99" 
                VerticalAlignment="Bottom" />
 
-        <Label Content="%" 
+            <Label Content="%" 
                FontFamily="{StaticResource Montserrat}"
                FontWeight="Bold"
                FontSize="15"
@@ -706,14 +715,14 @@
                VerticalAlignment="Bottom"/>
 
 
-        <!-- SET CONTROLLER MODE -->
-        <Button x:Name="ContainerMode" 
+            <!-- SET CONTROLLER MODE -->
+            <Button x:Name="ContainerMode" 
                 Style="{StaticResource ContainerSubControls}" 
                 FontSize="14" 
                 Margin="36,57,15,31" 
                 Grid.Row="2"/>
 
-        <Label Content="Set Controller Mode" 
+            <Label Content="Set Controller Mode" 
                FontFamily="{StaticResource Montserrat}"
                FontWeight="SemiBold"
                Foreground="{StaticResource MainColorGray2}"
@@ -725,31 +734,31 @@
                Height="24" 
                VerticalAlignment="Top" />
 
-        <Viewbox Grid.Row="2"
+            <Viewbox Grid.Row="2"
                  Cursor="Hand" 
                  Margin="82,119,153,157">
-            <RadioButton x:Name="radioAutoMode"
+                <RadioButton x:Name="radioAutoMode"
                          IsChecked="{Binding Path=IsAutoMode, Mode=TwoWay}" 
                          Cursor="Hand" 
                          BorderThickness="3,3,3,3"  
                          BorderBrush="{DynamicResource BrandBlue}" 
                          Foreground="{DynamicResource BrandBlue}" 
                          Width="18" Checked="RadioAutoMode_Checked"/>
-        </Viewbox>
+            </Viewbox>
 
-        <Viewbox Grid.Row="2"
+            <Viewbox Grid.Row="2"
                  Cursor="Hand" 
                  Margin="176,119,60,157">
-            <RadioButton x:Name="radioManualMode"
+                <RadioButton x:Name="radioManualMode"
                          IsChecked="{Binding Path=IsManualMode, Mode=TwoWay}" 
                          Cursor="Hand" 
                          BorderThickness="3,3,3,3"  
                          BorderBrush="{DynamicResource BrandBlue}" 
                          Foreground="{DynamicResource BrandBlue}" 
                          Width="18" Checked="RadioManualMode_Checked"/>
-        </Viewbox>
+            </Viewbox>
 
-        <Label Content="AUTO" 
+            <Label Content="AUTO" 
                FontFamily="{StaticResource Montserrat}"
                Foreground="{StaticResource MainColorGray2}"
                VerticalContentAlignment="Center"
@@ -761,7 +770,7 @@
                VerticalAlignment="Top" 
                FontWeight="Bold" />
 
-        <Label Content="MANUAL" 
+            <Label Content="MANUAL" 
                FontFamily="{StaticResource Montserrat}"
                Foreground="{StaticResource MainColorGray2}"
                VerticalContentAlignment="Center"
@@ -773,7 +782,7 @@
                VerticalAlignment="Top" 
                FontWeight="Bold" />
 
-        <TextBlock Text="Fan turns on according to the set activation temperature." 
+            <TextBlock Text="Fan turns on according to the set activation temperature." 
                    TextWrapping="Wrap"
                    FontFamily="{DynamicResource SourceSansPro}"
                    FontWeight="Normal"
@@ -786,7 +795,7 @@
                    FontSize="9" 
                    Foreground="#FF8188A2" />
 
-        <TextBlock Text="Control the speed of the fan regardless of the temperature." 
+            <TextBlock Text="Control the speed of the fan regardless of the temperature." 
                    TextWrapping="Wrap"
                    FontFamily="{DynamicResource SourceSansPro}"
                    FontWeight="Normal"
@@ -799,14 +808,14 @@
                    FontSize="9" 
                    Foreground="#FF8188A2" />
 
-        <!-- SET ACTIVATION TEMPERATURE -->
-        <Button Style="{StaticResource ContainerSubControls}" 
+            <!-- SET ACTIVATION TEMPERATURE -->
+            <Button Style="{StaticResource ContainerSubControls}" 
                 FontSize="14" 
                 Margin="26,58,25,148" 
                 Grid.Row="2" 
                 Grid.Column="1"/>
 
-        <Label Content="Set Activation Temperature" 
+            <Label Content="Set Activation Temperature" 
                FontFamily="{StaticResource Montserrat}"
                FontWeight="SemiBold"
                Foreground="{StaticResource MainColorGray2}"
@@ -818,7 +827,7 @@
                Height="24" 
                VerticalAlignment="Top" />
 
-        <Button x:Name="btnMinusTemperature"
+            <Button x:Name="btnMinusTemperature"
                 Style="{StaticResource ScaleButtonTemp}" 
                 Content="⮜" 
                 Margin="48,110,192,169" 
@@ -826,7 +835,7 @@
                 Height="28" 
                 Grid.Column="1" Click="BtnMinusTemperature_Click"/>
 
-        <Button x:Name="btnAddTemperature"
+            <Button x:Name="btnAddTemperature"
                 Style="{StaticResource ScaleButtonTemp}" 
                 Content="⮞" 
                 Margin="193,110,48,169" 
@@ -834,7 +843,7 @@
                 Height="28" 
                 Grid.Column="1" Click="BtnAddTemperature_Click"/>
 
-        <TextBox x:Name="lblActivationTemperature"
+            <TextBox x:Name="lblActivationTemperature"
                    Text="{Binding ActivationTemp, Mode=TwoWay}" 
                    FontFamily="{StaticResource Montserrat}"
                    Foreground="{StaticResource MainColorGray2}"
@@ -847,7 +856,7 @@
                    FontWeight="Bold" 
                    FontSize="24" BorderBrush="White" BorderThickness="0,0,0,0" PreviewTextInput="LblActivationTemperature_PreviewTextInput" />
 
-        <Label Content="°C" 
+            <Label Content="°C" 
                FontFamily="{StaticResource Montserrat}"
                FontWeight="Bold"
                Foreground="{StaticResource MainColorGray2}"
@@ -860,14 +869,14 @@
                VerticalAlignment="Bottom" 
                FontSize="10"/>
 
-        <!-- SET START FAN SPEED -->
-        <Button Style="{StaticResource ContainerSubControls}" 
+            <!-- SET START FAN SPEED -->
+            <Button Style="{StaticResource ContainerSubControls}" 
                 FontSize="14" 
                 Margin="26,175,25,31" 
                 Grid.Row="2" 
                 Grid.Column="1"/>
 
-        <Label Content="Set Start Fan Speed" 
+            <Label Content="Set Start Fan Speed" 
                FontFamily="{StaticResource Montserrat}"
                FontWeight="SemiBold"
                Foreground="{StaticResource MainColorGray2}"
@@ -879,7 +888,7 @@
                Height="24" 
                VerticalAlignment="Top" />
 
-        <Button x:Name="btnMinusStartFanSpeed"
+            <Button x:Name="btnMinusStartFanSpeed"
                 Style="{StaticResource ScaleButtonFan}" 
                 Content="⮜" 
                 Margin="48,227,191,52" 
@@ -887,7 +896,7 @@
                 Height="28" 
                 Grid.Column="1" Click="BtnMinusStartFanSpeed_Click"/>
 
-        <Button x:Name="btnAddStartFanSpeed"
+            <Button x:Name="btnAddStartFanSpeed"
                 Style="{StaticResource ScaleButtonFan}" 
                 Content="⮞" 
                 Margin="193,227,47,52" 
@@ -895,7 +904,7 @@
                 Height="28" 
                 Grid.Column="1" Click="BtnAddStartFanSpeed_Click"/>
 
-        <TextBox x:Name="lblStartFanSpeed"
+            <TextBox x:Name="lblStartFanSpeed"
                    Text="{Binding StartFanSpeed, Mode=TwoWay}" 
                    FontFamily="{StaticResource Montserrat}"
                    Foreground="{StaticResource MainColorGray2}"
@@ -908,7 +917,7 @@
                    FontWeight="Bold" 
                    FontSize="24" BorderBrush="White" BorderThickness="0,0,0,0" PreviewTextInput="LblStartFanSpeed_PreviewTextInput" />
 
-        <Label Content="%" 
+            <Label Content="%" 
                FontFamily="{StaticResource Montserrat}"
                FontWeight="Bold"
                Foreground="{StaticResource MainColorGray2}"
@@ -921,15 +930,15 @@
                VerticalAlignment="Bottom" 
                FontSize="10"/>
 
-        <!-- SET FAN SPEED (Manual Mode) -->
-        <Button x:Name="ContainerMode_Copy2" 
+            <!-- SET FAN SPEED (Manual Mode) -->
+            <Button x:Name="ContainerMode_Copy2" 
                 Style="{StaticResource ContainerSubControls}" 
                 FontSize="14" 
                 Margin="16,58,35,31" 
                 Grid.Row="2" 
                 Grid.Column="2"/>
 
-        <Label Content="Set Fan Speed" 
+            <Label Content="Set Fan Speed" 
                FontFamily="{StaticResource Montserrat}"
                FontWeight="SemiBold"
                Foreground="{StaticResource MainColorGray2}"
@@ -941,7 +950,7 @@
                Height="24" 
                VerticalAlignment="Top" />
 
-        <TextBlock Text="Available in Manual mode only." 
+            <TextBlock Text="Available in Manual mode only." 
                    TextWrapping="Wrap"
                    FontFamily="{DynamicResource SourceSansPro}"
                    FontWeight="Normal"
@@ -954,7 +963,7 @@
                    FontSize="9" 
                    Foreground="#FF8188A2" />
 
-        <Slider x:Name="sliderFanSpeed"
+            <Slider x:Name="sliderFanSpeed"
                 Value="{Binding FanSpeed, Mode=TwoWay}"
                 Style="{DynamicResource SliderStyle}" 
                 Grid.Column="2" 
@@ -966,7 +975,7 @@
                 BorderBrush="{DynamicResource BrandGreen}" 
                 Foreground="{DynamicResource BrandGreen}" Maximum="99" LargeChange="10"/>
 
-        <Button x:Name="btnFanSpeed_Off"
+            <Button x:Name="btnFanSpeed_Off"
                 Style="{StaticResource ScaleButtonFan2}" 
                 Content="0FF" 
                 Margin="40,175,199,104" 
@@ -974,7 +983,7 @@
                 Height="28" 
                 Grid.Column="2" Click="BtnFanSpeed_Off_Click" />
 
-        <Button x:Name="btnFanSpeed_Max"
+            <Button x:Name="btnFanSpeed_Max"
                 Style="{StaticResource ScaleButtonFan2}" 
                 Content="MAX" 
                 Margin="40,225,199,54" 
@@ -982,14 +991,14 @@
                 Height="28" 
                 Grid.Column="2" Click="BtnFanSpeed_Max_Click" />
 
-        <Button Style="{StaticResource ScaleButtonFan2}" 
+            <Button Style="{StaticResource ScaleButtonFan2}" 
                 Content="30" 
                 Margin="120,175,120,104" 
                 Grid.Row="2" 
                 Height="28" 
                 Grid.Column="2" Click="BtnFanSpeed_30_Click"/>
 
-        <Button x:Name="btnFanSpeed_70"
+            <Button x:Name="btnFanSpeed_70"
                 Style="{StaticResource ScaleButtonFan2}" 
                 Content="70" 
                 Margin="120,225,120,54" 
@@ -997,7 +1006,7 @@
                 Height="28" 
                 Grid.Column="2" Click="BtnFanSpeed_70_Click"/>
 
-        <Button x:Name="btnFanSpeed_50"
+            <Button x:Name="btnFanSpeed_50"
                 Style="{StaticResource ScaleButtonFan2}" 
                 Content="50" 
                 Margin="175,175,65,104" 
@@ -1005,7 +1014,7 @@
                 Height="28" 
                 Grid.Column="2" Click="BtnFanSpeed_50_Click"/>
 
-        <Button x:Name="btnFanSpeed_90" 
+            <Button x:Name="btnFanSpeed_90" 
                 Style="{StaticResource ScaleButtonFan2}" 
                 Content="90" 
                 Margin="175,225,65,54" 
@@ -1013,7 +1022,7 @@
                 Height="28" 
                 Grid.Column="2" Click="BtnFanSpeed_90_Click"/>
 
-        <Rectangle x:Name="coverSetFanSpeed"
+            <Rectangle x:Name="coverSetFanSpeed"
                    Grid.Column="2" 
                    HorizontalAlignment="Left" 
                    Height="218" 
@@ -1025,21 +1034,21 @@
                    RadiusX="8.646" 
                    RadiusY="8.646" 
                    Opacity="0.7">
-            <Rectangle.Style>
-                <Style TargetType="Rectangle">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Path=IsManualMode}" Value="True">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding Path=IsManualMode}" Value="False">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Rectangle.Style>
-        </Rectangle>
+                <Rectangle.Style>
+                    <Style TargetType="Rectangle">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsManualMode}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=IsManualMode}" Value="False">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Rectangle.Style>
+            </Rectangle>
 
-        <Rectangle x:Name="coverSetActivationTemp"
+            <Rectangle x:Name="coverSetActivationTemp"
             Grid.Column="1" 
             HorizontalAlignment="Center" 
             Height="101" 
@@ -1051,21 +1060,21 @@
             RadiusX="8.646" 
             RadiusY="8.646" 
             Opacity="0.7">
-            <Rectangle.Style>
-                <Style TargetType="{x:Type Rectangle}">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsAutoMode}" Value="True">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsAutoMode}" Value="False">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Rectangle.Style>
-        </Rectangle>
+                <Rectangle.Style>
+                    <Style TargetType="{x:Type Rectangle}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsAutoMode}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsAutoMode}" Value="False">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Rectangle.Style>
+            </Rectangle>
 
-        <Rectangle x:Name="coverSetStartFanSpeed"
+            <Rectangle x:Name="coverSetStartFanSpeed"
             Grid.Column="1" 
             HorizontalAlignment="Center" 
             Height="101" 
@@ -1077,20 +1086,20 @@
             RadiusX="8.646" 
             RadiusY="8.646" 
             Opacity="0.7">
-            <Rectangle.Style>
-                <Style TargetType="{x:Type Rectangle}">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsAutoMode}" Value="True">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsAutoMode}" Value="False">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Rectangle.Style>
-        </Rectangle>
-        <Label FontFamily="{StaticResource Montserrat}"
+                <Rectangle.Style>
+                    <Style TargetType="{x:Type Rectangle}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsAutoMode}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsAutoMode}" Value="False">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Rectangle.Style>
+            </Rectangle>
+            <Label FontFamily="{StaticResource Montserrat}"
                FontWeight="Normal"
                FontSize="8"
                Foreground="{DynamicResource GrayDark}"
@@ -1099,26 +1108,26 @@
                Margin="18,2,101,0"
                Grid.Column="0"
                Grid.Row="0">
-            <Label.Style>
-                <Style TargetType="{x:Type Label}">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsAutoMode}" Value="True">
-                            <Setter Property="Content" Value="Fan Controller - Auto Mode"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsAutoMode}" Value="False">
-                            <Setter Property="Content" Value="Fan Controller - Manual Mode"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Label.Style>
-        </Label>
-        <Image Source="/assets/images/settings.png" 
+                <Label.Style>
+                    <Style TargetType="{x:Type Label}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsAutoMode}" Value="True">
+                                <Setter Property="Content" Value="Fan Controller - Auto Mode"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsAutoMode}" Value="False">
+                                <Setter Property="Content" Value="Fan Controller - Manual Mode"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Label.Style>
+            </Label>
+            <Image Source="/assets/images/settings.png" 
                Margin="4,4,250,2"
                Grid.Column="0"
                Grid.Row="0"/>
 
-        <!-- UI Cover -->
-        <Border x:Name="coverWhole"
+            <!-- UI Cover -->
+            <Border x:Name="coverWhole"
                 HorizontalAlignment="Left" 
                 Height="429" 
                 Margin="36,25,0,0" 
@@ -1131,21 +1140,21 @@
                 Grid.RowSpan="2" 
                 Grid.ColumnSpan="3"
                 BorderThickness="0,4,0,4">
-            <Border.Style>
-                <Style TargetType="Border">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsReady}" Value="True">
-                            <Setter Property="Visibility" Value="Hidden"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsReady}" Value="False">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
-        </Border>
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsReady}" Value="True">
+                                <Setter Property="Visibility" Value="Hidden"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsReady}" Value="False">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+            </Border>
 
-        <Image Grid.Column="1" 
+            <Image Grid.Column="1" 
                HorizontalAlignment="Center" 
                Height="56" 
                Margin="0,154,0,0" 
@@ -1153,33 +1162,33 @@
                VerticalAlignment="Top" 
                Width="56" 
                Grid.Row="1">
-            <Image.Style>
-                <Style TargetType="Image">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsReady}" Value="False">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsReady}" Value="True">
-                            <Setter Property="Visibility" Value="Hidden"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsConnected}" Value="True">
-                            <Setter Property="Source" Value="/assets/images/connected.png"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsConnected}" Value="False">
-                            <Setter Property="Source" Value="/assets/images/disconnected.png"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsSearchingPort}" Value="True">
-                            <Setter Property="Source" Value="/assets/images/search.png"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsPortFound}" Value="False">
-                            <Setter Property="Source" Value="/assets/images/notfound.png"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Image.Style>
-        </Image>
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsReady}" Value="False">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsReady}" Value="True">
+                                <Setter Property="Visibility" Value="Hidden"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsConnected}" Value="True">
+                                <Setter Property="Source" Value="/assets/images/connected.png"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsConnected}" Value="False">
+                                <Setter Property="Source" Value="/assets/images/disconnected.png"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsSearchingPort}" Value="True">
+                                <Setter Property="Source" Value="/assets/images/search.png"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsPortFound}" Value="False">
+                                <Setter Property="Source" Value="/assets/images/notfound.png"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
 
-        <Label HorizontalAlignment="Center" 
+            <Label HorizontalAlignment="Center" 
                Margin="0,58,0,0" 
                VerticalAlignment="Top" 
                Grid.Column="1" 
@@ -1187,33 +1196,33 @@
                Foreground="{DynamicResource MainColorGray}" 
                FontFamily="{DynamicResource Montserrat}" 
                FontWeight="Bold">
-            <Label.Style>
-                <Style TargetType="Label">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsReady}" Value="False">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsReady}" Value="True">
-                            <Setter Property="Visibility" Value="Hidden"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsConnected}" Value="True">
-                            <Setter Property="Content" Value="CONNECTED"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsConnected}" Value="False">
-                            <Setter Property="Content" Value="DISCONNECTED"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsSearchingPort}" Value="True">
-                            <Setter Property="Content" Value="SEARCHING PORT..."/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsPortFound}" Value="False">
-                            <Setter Property="Content" Value="PORT NOT FOUND"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Label.Style>
-        </Label>
+                <Label.Style>
+                    <Style TargetType="Label">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsReady}" Value="False">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsReady}" Value="True">
+                                <Setter Property="Visibility" Value="Hidden"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsConnected}" Value="True">
+                                <Setter Property="Content" Value="CONNECTED"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsConnected}" Value="False">
+                                <Setter Property="Content" Value="DISCONNECTED"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsSearchingPort}" Value="True">
+                                <Setter Property="Content" Value="SEARCHING PORT..."/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsPortFound}" Value="False">
+                                <Setter Property="Content" Value="PORT NOT FOUND"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Label.Style>
+            </Label>
 
-        <TextBlock TextWrapping="Wrap"
+            <TextBlock TextWrapping="Wrap"
                    FontFamily="{DynamicResource SourceSansPro}"
                    FontWeight="Normal"
                    TextAlignment="Center"
@@ -1223,30 +1232,31 @@
                    VerticalAlignment="Top" 
                    FontSize="10" 
                    Foreground="#FF8188A2" Grid.ColumnSpan="3">
-            <TextBlock.Style>
-                <Style TargetType="TextBlock">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsReady}" Value="False">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsReady}" Value="True">
-                            <Setter Property="Visibility" Value="Hidden"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsConnected}" Value="True">
-                            <Setter Property="Text" Value="Controller connected successfully."/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsConnected}" Value="False">
-                            <Setter Property="Text" Value="Controller was disconnected. Please reconnect."/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsSearchingPort}" Value="True">
-                            <Setter Property="Text" Value="Detecing port and connecting to the controller."/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsPortFound}" Value="False">
-                            <Setter Property="Text" Value="Controller cannot be detected."/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBlock.Style>
-        </TextBlock>
-    </Grid>
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsReady}" Value="False">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsReady}" Value="True">
+                                <Setter Property="Visibility" Value="Hidden"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsConnected}" Value="True">
+                                <Setter Property="Text" Value="Controller connected successfully."/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsConnected}" Value="False">
+                                <Setter Property="Text" Value="Controller was disconnected. Please reconnect."/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsSearchingPort}" Value="True">
+                                <Setter Property="Text" Value="Detecing port and connecting to the controller."/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsPortFound}" Value="False">
+                                <Setter Property="Text" Value="Controller cannot be detected."/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </Grid>
+    </Border>
 </Window>

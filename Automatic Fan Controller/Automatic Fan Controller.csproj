@@ -40,7 +40,6 @@
     <None Remove="assets\fonts\Source_Sans_Pro\SourceSansPro-Regular.ttf" />
     <None Remove="assets\fonts\Source_Sans_Pro\SourceSansPro-SemiBold.ttf" />
     <None Remove="assets\fonts\Source_Sans_Pro\SourceSansPro-SemiBoldItalic.ttf" />
-    <None Remove="assets\images\check.png" />
     <None Remove="assets\images\connected.png" />
     <None Remove="assets\images\disconnected.png" />
     <None Remove="assets\images\fancontroller.ico" />
@@ -50,6 +49,7 @@
     <None Remove="assets\images\search.png" />
     <None Remove="assets\images\searching.gif" />
     <None Remove="assets\images\settings.png" />
+    <None Remove="assets\images\splash.png" />
     <None Remove="assets\images\temperature.png" />
   </ItemGroup>
 
@@ -93,8 +93,9 @@
     <Resource Include="assets\fonts\Source_Sans_Pro\SourceSansPro-Regular.ttf" />
     <Resource Include="assets\fonts\Source_Sans_Pro\SourceSansPro-SemiBold.ttf" />
     <Resource Include="assets\fonts\Source_Sans_Pro\SourceSansPro-SemiBoldItalic.ttf" />
-    <Resource Include="assets\images\check.png" />
-    <Resource Include="assets\images\connected.png" />
+    <Resource Include="assets\images\connected.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="assets\images\disconnected.png" />
     <Resource Include="assets\images\fancontroller.ico" />
     <Resource Include="assets\images\fanspeed.png" />
@@ -102,6 +103,9 @@
     <Resource Include="assets\images\peoplecount.png" />
     <Resource Include="assets\images\search.png" />
     <Resource Include="assets\images\settings.png" />
+    <SplashScreen Include="assets\images\splash.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </SplashScreen>
     <Resource Include="assets\images\temperature.png" />
   </ItemGroup>
 

@@ -570,7 +570,7 @@
                RenderTransformOrigin="7.5,1.177"/>
 
             <Label x:Name="lblPeopleCount"
-               Content="{Binding PeopleCount, Mode=OneWay}" 
+               Content="{Binding PersonCount, Mode=OneWay}" 
                FontFamily="{StaticResource Montserrat}"
                FontWeight="Bold"
                FontSize="60"

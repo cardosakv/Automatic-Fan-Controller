@@ -40,11 +40,7 @@ namespace Automatic_Fan_Controller
             { 
                 _isAutoMode = value;
                 OnPropertyChanged("IsAutoMode");
-
-                if (_serialPort.IsOpen)
-                {
-                    _serialPort.WriteLine("Mode:01");
-                }
+                SendDataToArduino();
             }
         }
 
@@ -55,11 +51,7 @@ namespace Automatic_Fan_Controller
             {
                 _isManualMode = value;
                 OnPropertyChanged("IsManualMode");
-
-                if (_serialPort.IsOpen)
-                {
-                    _serialPort.WriteLine("Mode:02");
-                }
+                SendDataToArduino();
             }
         }
 
@@ -103,7 +95,7 @@ namespace Automatic_Fan_Controller
             }
         }
 
-        public int PeopleCount
+        public int PersonCount
         {
             get { return _peopleCount; }
             set 
@@ -130,11 +122,7 @@ namespace Automatic_Fan_Controller
             { 
                 _activationTemp = value;
                 OnPropertyChanged("ActivationTemp");
-
-                if (_serialPort.IsOpen)
-                {
-                    _serialPort.WriteLine($"ActivationTemp:{ActivationTemp}");
-                }
+                SendDataToArduino();
             }
         }
 
@@ -145,6 +133,7 @@ namespace Automatic_Fan_Controller
             { 
                 _fanSpeed = value;
                 OnPropertyChanged("FanSpeed");
+                SendDataToArduino();
             }
         }
 
@@ -157,11 +146,7 @@ namespace Automatic_Fan_Controller
                 {
                     _startFanSpeed = value;
                     OnPropertyChanged("StartFanSpeed");
-
-                    if (_serialPort.IsOpen)
-                    {
-                        _serialPort.WriteLine($"StartFanSpeed:{StartFanSpeed}");
-                    }
+                    SendDataToArduino();
                 }
             }
         }
@@ -230,28 +215,31 @@ namespace Automatic_Fan_Controller
             // Will receive only the temperature, fan speed,
             // and person count data from the arduino.
             //
-            // Data format:
+            // Data format: 6,38,70
             //
-            //      FanSpeed:85
-            //      Temperature:32
-            //      PeopleCount:05
+            //      6 - person count
+            //      38 - temperature
+            //      70 - fan speed
 
-            string dataType = serialData[..serialData.IndexOf(":")];
-            int dataValue = int.Parse(serialData[(serialData.IndexOf(":") + 1)..]);
+            string[] data = serialData.Split(',',3);
 
-            switch (dataType)
+            PersonCount = int.Parse(data[0]);
+            Temperature = int.Parse(data[1]);
+            FanSpeed = int.Parse(data[3]);
+        }
+
+        private void SendDataToArduino()
+        {
+            if (_serialPort.IsOpen)
             {
-                case "FanSpeed":
-                    FanSpeed = dataValue;
-                    break;
-
-                case "Temperature":
-                    Temperature = dataValue;
-                    break;
-
-                case "PeopleCount":
-                    PeopleCount = dataValue;
-                    break;
+                if (IsAutoMode)
+                {
+                    _serialPort.WriteLine($"A{ActivationTemp}{StartFanSpeed}{FanSpeed}");
+                }
+                else
+                {
+                    _serialPort.WriteLine($"M{ActivationTemp}{StartFanSpeed}{FanSpeed}");
+                }
             }
         }
 

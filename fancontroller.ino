@@ -108,7 +108,7 @@ void countPersons()
   readSonic(sonic2TrigPin, sonic2EchoPin, sonic2Dist);
   delay(30);
   
-  if(sonic1Dist > 20 && !sonic1Passed)
+  if (sonic1Dist > 20 && !sonic1Passed)
   {
     sonic1Passed = true;
     
@@ -118,7 +118,7 @@ void countPersons()
     }
   }
         
-  if(sonic2Dist > 20 && !sonic2Passed)
+  if (sonic2Dist > 20 && !sonic2Passed)
   {
     sonic2Passed = true;
     
@@ -128,7 +128,7 @@ void countPersons()
     }
   }
 
-  if(sonic1Dist <= 5 && sonic1Passed && 
+  if (sonic1Dist <= 5 && sonic1Passed && 
      sonic2Dist <= 5 && sonic2Passed)
   {
     sonic1Passed = false;

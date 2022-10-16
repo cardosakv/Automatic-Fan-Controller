@@ -43,6 +43,7 @@ void loop()
   setFanSpeed();
 
   countPersons();
+  sendSensorDataToApp();
 }
 
 

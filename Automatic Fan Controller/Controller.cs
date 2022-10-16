@@ -225,7 +225,7 @@ namespace Automatic_Fan_Controller
 
             PersonCount = int.Parse(data[0]);
             Temperature = int.Parse(data[1]);
-            FanSpeed = int.Parse(data[3]);
+            FanSpeed = int.Parse(data[2]);
         }
 
         private void SendDataToArduino()

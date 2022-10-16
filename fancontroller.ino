@@ -112,17 +112,17 @@ void countPersons()
   {
     sonic1Passed = true;
     
-  	if (!sonic2Passed)
+    if (!sonic2Passed)
     {
       personCount++;
     }
   }
-        
+  
   if (sonic2Dist > 20 && !sonic2Passed)
   {
     sonic2Passed = true;
     
-  	if (!sonic1Passed)
+    if (!sonic1Passed)
     {
       personCount--;
     }

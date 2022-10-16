@@ -217,7 +217,7 @@ namespace Automatic_Fan_Controller
             //
             // Data format: 6,38,70
             //
-            //      6 - person count
+            //      6  - person count
             //      38 - temperature
             //      70 - fan speed
 

@@ -74,7 +74,6 @@ void readTemperature()
   temperature = analogRead(temperaturePin) * 0.48828125;
 }
 
-// 30, 20, 40, 80, 100
 void setFanSpeed()
 {
   long analogFanSpeed = 0;

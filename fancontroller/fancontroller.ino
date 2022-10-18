@@ -45,10 +45,6 @@ void setup()
 
 void loop()
 {
-  Serial.println(sonic1Dist);
-  Serial.println(sonic1DistInit);
-  Serial.println(sonic2Dist);
-  Serial.println(sonic2DistInit);
   parseSerialDataFromApp();
   
   readTemperature();
@@ -87,7 +83,7 @@ void parseSerialDataFromApp()
   }
 }
 
-void readTemperature() // happens every interval set (5 sec)
+void readTemperature() // happens every interval set (10 sec)
 {
   if (millis() - lastCheckTempTime >= checkTempInterval)
   {

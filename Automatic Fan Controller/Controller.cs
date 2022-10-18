@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO.Ports;
 using System.Linq;
 using System.Management;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
@@ -13,8 +11,10 @@ namespace Automatic_Fan_Controller
 {
     public  class Controller : INotifyPropertyChanged
     {
+        private Thread? readThread;
         private readonly SerialPort _serialPort = new();
-        private readonly DispatcherTimer _serialTimer = new();
+        private readonly DispatcherTimer _dataUpdaterTimer = new();
+        private int _dataUpdaterTime = 0;
 
         private bool _isAutoMode = true;
         private bool _isManualMode = false;
@@ -22,15 +22,16 @@ namespace Automatic_Fan_Controller
         private bool _isPortFound = true;
         private bool _isConnected = false;
         private bool _isReady = false;
-        private int _peopleCount = 0;
+        private int _personCount = 0;
         private int _temperature = 0;
-        private int _activationTemp = 25;
+        private int _activationTemp = 25; // default
         private int _fanSpeed = 0;
-        private int _startFanSpeed = 50;
+        private int _startFanSpeed = 50; // default
 
         public Controller()
         {
-            _serialPort.DataReceived += new SerialDataReceivedEventHandler(SerialPort_DataReceived);
+            _dataUpdaterTimer.Tick += new EventHandler(DataUpdaterTimer_Tick);
+            _dataUpdaterTimer.Interval = new TimeSpan(0, 0, 1);
         }
 
         public bool IsAutoMode
@@ -40,7 +41,7 @@ namespace Automatic_Fan_Controller
             { 
                 _isAutoMode = value;
                 OnPropertyChanged("IsAutoMode");
-                SendDataToArduino();
+                SendDataToArduino("Mode", 1); // 1 - auto mode
             }
         }
 
@@ -51,7 +52,7 @@ namespace Automatic_Fan_Controller
             {
                 _isManualMode = value;
                 OnPropertyChanged("IsManualMode");
-                SendDataToArduino();
+                SendDataToArduino("Mode", 0); // 0 - manual mode
             }
         }
 
@@ -82,6 +83,9 @@ namespace Automatic_Fan_Controller
             {
                 _isConnected = value;
                 OnPropertyChanged("IsConnected");
+
+                readThread = new Thread(new ThreadStart(ReadSerialPortData));
+                readThread.Start();
             }
         }
 
@@ -97,11 +101,11 @@ namespace Automatic_Fan_Controller
 
         public int PersonCount
         {
-            get { return _peopleCount; }
+            get { return _personCount; }
             set 
             { 
-                _peopleCount = value;
-                OnPropertyChanged("PeopleCount");
+                _personCount = value;
+                OnPropertyChanged("PersonCount");
             }
         }
 
@@ -109,7 +113,7 @@ namespace Automatic_Fan_Controller
         {
             get { return _temperature; }
             set 
-            { 
+            {
                 _temperature = value;
                 OnPropertyChanged("Temperature");
             }
@@ -120,9 +124,12 @@ namespace Automatic_Fan_Controller
             get { return _activationTemp; }
             set 
             { 
-                _activationTemp = value;
-                OnPropertyChanged("ActivationTemp");
-                SendDataToArduino();
+                if (value >= 10 && value <= 40) // default range
+                {
+                    _activationTemp = value;
+                    OnPropertyChanged("ActivationTemp");
+                    SendDataToArduino("ActivationTemp", value);
+                }
             }
         }
 
@@ -130,10 +137,17 @@ namespace Automatic_Fan_Controller
         {
             get { return _fanSpeed; }
             set 
-            { 
-                _fanSpeed = value;
-                OnPropertyChanged("FanSpeed");
-                SendDataToArduino();
+            {
+                if (value >= 0 && value <= 100)
+                {
+                    _fanSpeed = value;
+                    OnPropertyChanged("FanSpeed");
+
+                    if (IsManualMode)
+                    {
+                        SendDataToArduino("FanSpeed", value);
+                    }
+                }
             }
         }
 
@@ -142,14 +156,16 @@ namespace Automatic_Fan_Controller
             get { return _startFanSpeed; }
             set 
             {
-                if (value > 0 && value < 100)
+                if (value >= 20 && value <= 100) // default range
                 {
                     _startFanSpeed = value;
                     OnPropertyChanged("StartFanSpeed");
-                    SendDataToArduino();
+                    SendDataToArduino("StartFanSpeed", value);
                 }
             }
         }
+
+
 
         public async void ConnectArduinoPortAsync()
         {
@@ -160,21 +176,29 @@ namespace Automatic_Fan_Controller
 
             if (arduinoPort is not null)
             {
-                _serialPort.PortName = arduinoPort;
-                _serialPort.BaudRate = 9600;
-                _serialPort.Open();
+                try
+                {
+                    _serialPort.PortName = arduinoPort;
+                    _serialPort.BaudRate = 115200;
+                    _serialPort.Open();
+                    _dataUpdaterTimer.Start();
 
-                IsPortFound = true;
-                IsConnected = true;
-                IsSearchingPort = false;
-                await Task.Delay(2000);
-                IsReady = true;
+                    IsPortFound = true;
+                    IsConnected = true;
+                    IsSearchingPort = false;
+                    await Task.Delay(2000);
+                    IsReady = true;
+                }
+                catch (UnauthorizedAccessException) { }
             }
             else
             {
                 IsPortFound = false;
                 IsConnected = false;
                 IsSearchingPort = false;
+
+                await Task.Delay(1000);
+                ConnectArduinoPortAsync();
             }
         }
 
@@ -183,12 +207,13 @@ namespace Automatic_Fan_Controller
             ManagementScope connectionScope = new();
             SelectQuery serialQuery = new("SELECT * FROM Win32_SerialPort");
             ManagementObjectSearcher searcher = new(connectionScope, serialQuery);
+
             try
             {
                 foreach (ManagementObject item in searcher.Get().Cast<ManagementObject>())
                 {
-                    string desc = item["Description"].ToString();
-                    string deviceId = item["DeviceID"].ToString();
+                    string? desc = item["Description"].ToString();
+                    string? deviceId = item["DeviceID"].ToString();
 
                     if (desc.Contains("Arduino"))
                     {
@@ -196,52 +221,77 @@ namespace Automatic_Fan_Controller
                     }
                 }
             }
-            catch (ManagementException)
-            {
-                // Do nothing 
-            }
+            catch (ManagementException) { }
 
             return null;
         }
 
-        private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        private async void ReadSerialPortData()
         {
-            string serialData = _serialPort.ReadLine();
-            ParseDataFromSerial(serialData);
+            while (_serialPort.IsOpen)
+            {
+                try
+                {
+                    if (_serialPort.BytesToRead > 0)
+                    {
+                        string serialData = _serialPort.ReadLine();
+
+                        if (serialData.Length > 5)
+                        {
+                            ParseDataFromSerial(serialData);
+                        }
+                    }
+                }
+                catch (OperationCanceledException)
+                {
+                    IsConnected = false;
+                    IsReady = false;
+
+                    await Task.Delay(3000);
+                    ConnectArduinoPortAsync();
+                }
+                catch (TimeoutException) { }
+            }
         }
 
         private void ParseDataFromSerial(string serialData)
         {
-            // Will receive only the temperature, fan speed,
-            // and person count data from the arduino.
-            //
-            // Data format: 6,38,70
-            //
-            //      6  - person count
-            //      38 - temperature
-            //      70 - fan speed
+            try
+            {
+                string dataType = serialData[..serialData.IndexOf(":")];
+                int dataValue = int.Parse(serialData[(serialData.IndexOf(":") + 1)..]);
 
-            string[] data = serialData.Split(',',3);
+                switch (dataType)
+                {
+                    case "PersonCount":
+                        PersonCount = dataValue;
+                        break;
 
-            PersonCount = int.Parse(data[0]);
-            Temperature = int.Parse(data[1]);
-            FanSpeed = int.Parse(data[2]);
+                    case "FanSpeed":
+                        if (IsAutoMode) FanSpeed = dataValue;
+                        break;
+
+                    case "Temperature":
+                        Temperature = dataValue;
+                        break;
+                }
+            }
+            catch { }
         }
 
-        private void SendDataToArduino()
+        private void SendDataToArduino(string dataName, int dataValue)
         {
             if (_serialPort.IsOpen)
             {
-                if (IsAutoMode)
-                {
-                    _serialPort.WriteLine($"A{ActivationTemp}{StartFanSpeed}{FanSpeed}");
-                }
-                else
-                {
-                    _serialPort.WriteLine($"M{ActivationTemp}{StartFanSpeed}{FanSpeed}");
-                }
+                _serialPort.WriteLine($"{dataName}:{dataValue}");
             }
         }
+
+        private void DataUpdaterTimer_Tick(object sender, EventArgs e)
+        {
+            _dataUpdaterTime++;
+        }
+
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string name)

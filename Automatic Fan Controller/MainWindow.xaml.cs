@@ -72,39 +72,43 @@ namespace Automatic_Fan_Controller
 
         private void BtnFanSpeed_Max_Click(object sender, RoutedEventArgs e)
         {
-            _controller.FanSpeed = 99;
+            _controller.FanSpeed = 100;
         }
 
-        private void BtnFanSpeed_30_Click(object sender, RoutedEventArgs e)
+        private void BtnFanSpeed_20_Click(object sender, RoutedEventArgs e)
         {
-            _controller.FanSpeed = 30;
+            _controller.FanSpeed = 20;
         }
 
-        private void BtnFanSpeed_50_Click(object sender, RoutedEventArgs e)
+        private void BtnFanSpeed_40_Click(object sender, RoutedEventArgs e)
         {
-            _controller.FanSpeed = 50;
+            _controller.FanSpeed = 40;
         }
 
-        private void BtnFanSpeed_70_Click(object sender, RoutedEventArgs e)
+        private void BtnFanSpeed_60_Click(object sender, RoutedEventArgs e)
         {
-            _controller.FanSpeed = 70;
+            _controller.FanSpeed = 60;
         }
 
-        private void BtnFanSpeed_90_Click(object sender, RoutedEventArgs e)
+        private void BtnFanSpeed_80_Click(object sender, RoutedEventArgs e)
         {
-            _controller.FanSpeed = 90;
+            _controller.FanSpeed = 80;
         }
 
         private void LblStartFanSpeed_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new("[^1-9]+");
-            e.Handled = regex.IsMatch(e.Text);
+            if (lblStartFanSpeed.Text != string.Empty)
+            {
+                _controller.FanSpeed = int.Parse(lblStartFanSpeed.Text);
+            }
         }
 
         private void LblActivationTemperature_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
+            if (lblActivationTemperature.Text != string.Empty)
+            {
+                _controller.ActivationTemp = int.Parse(lblActivationTemperature.Text);
+            }
         }
 
         private void BtnMinimize_Click(object sender, RoutedEventArgs e)
@@ -120,6 +124,22 @@ namespace Automatic_Fan_Controller
         private void Toolbar_MouseDown(object sender, MouseButtonEventArgs e)
         {
             DragMove();
+        }
+
+        private void lblStartFanSpeed_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && lblStartFanSpeed.Text != string.Empty)
+            {
+                _controller.StartFanSpeed = int.Parse(lblStartFanSpeed.Text);
+            }
+        }
+
+        private void lblActivationTemperature_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && lblActivationTemperature.Text != string.Empty)
+            {
+                _controller.ActivationTemp = int.Parse(lblActivationTemperature.Text);
+            }
         }
     }
 }

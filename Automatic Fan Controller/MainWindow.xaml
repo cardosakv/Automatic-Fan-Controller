@@ -695,11 +695,12 @@
                Foreground="{StaticResource MainColorGray2}"
                VerticalContentAlignment="Center"
                HorizontalContentAlignment="Center" 
-               Margin="98,0,35,34"
+               Margin="91,0,35,34"
                Grid.Row="1" 
                Grid.Column="2" 
                Height="99" 
-               VerticalAlignment="Bottom" />
+               VerticalAlignment="Bottom">
+            </Label>
 
             <Label Content="%" 
                FontFamily="{StaticResource Montserrat}"
@@ -830,7 +831,7 @@
             <Button x:Name="btnMinusTemperature"
                 Style="{StaticResource ScaleButtonTemp}" 
                 Content="⮜" 
-                Margin="48,110,192,169" 
+                Margin="48,110,192,167" 
                 Grid.Row="2" 
                 Height="28" 
                 Grid.Column="1" Click="BtnMinusTemperature_Click"/>
@@ -838,7 +839,7 @@
             <Button x:Name="btnAddTemperature"
                 Style="{StaticResource ScaleButtonTemp}" 
                 Content="⮞" 
-                Margin="193,110,48,169" 
+                Margin="193,110,48,167" 
                 Grid.Row="2" 
                 Height="28" 
                 Grid.Column="1" Click="BtnAddTemperature_Click"/>
@@ -854,7 +855,10 @@
                    Height="40" 
                    VerticalAlignment="Top" 
                    FontWeight="Bold" 
-                   FontSize="24" BorderBrush="White" BorderThickness="0,0,0,0" PreviewTextInput="LblActivationTemperature_PreviewTextInput" />
+                   FontSize="24" BorderBrush="White" 
+                   BorderThickness="0,0,0,0" 
+                   PreviewTextInput="LblActivationTemperature_PreviewTextInput" 
+                     KeyDown="lblActivationTemperature_KeyDown" />
 
             <Label Content="°C" 
                FontFamily="{StaticResource Montserrat}"
@@ -891,7 +895,7 @@
             <Button x:Name="btnMinusStartFanSpeed"
                 Style="{StaticResource ScaleButtonFan}" 
                 Content="⮜" 
-                Margin="48,227,191,52" 
+                Margin="48,227,191,50" 
                 Grid.Row="2" 
                 Height="28" 
                 Grid.Column="1" Click="BtnMinusStartFanSpeed_Click"/>
@@ -899,7 +903,7 @@
             <Button x:Name="btnAddStartFanSpeed"
                 Style="{StaticResource ScaleButtonFan}" 
                 Content="⮞" 
-                Margin="193,227,47,52" 
+                Margin="193,227,47,50" 
                 Grid.Row="2" 
                 Height="28" 
                 Grid.Column="1" Click="BtnAddStartFanSpeed_Click"/>
@@ -915,7 +919,9 @@
                    Height="40" 
                    VerticalAlignment="Top" 
                    FontWeight="Bold" 
-                   FontSize="24" BorderBrush="White" BorderThickness="0,0,0,0" PreviewTextInput="LblStartFanSpeed_PreviewTextInput" />
+                   FontSize="24" BorderBrush="White" 
+                     BorderThickness="0,0,0,0" 
+                     PreviewTextInput="LblStartFanSpeed_PreviewTextInput" KeyDown="lblStartFanSpeed_KeyDown" />
 
             <Label Content="%" 
                FontFamily="{StaticResource Montserrat}"
@@ -973,12 +979,12 @@
                 VerticalAlignment="Top" 
                 Width="173" 
                 BorderBrush="{DynamicResource BrandGreen}" 
-                Foreground="{DynamicResource BrandGreen}" Maximum="99" LargeChange="10"/>
+                Foreground="{DynamicResource BrandGreen}" Maximum="100" LargeChange="10"/>
 
             <Button x:Name="btnFanSpeed_Off"
                 Style="{StaticResource ScaleButtonFan2}" 
                 Content="0FF" 
-                Margin="40,175,199,104" 
+                Margin="40,175,199,102" 
                 Grid.Row="2" 
                 Height="28" 
                 Grid.Column="2" Click="BtnFanSpeed_Off_Click" />
@@ -986,46 +992,46 @@
             <Button x:Name="btnFanSpeed_Max"
                 Style="{StaticResource ScaleButtonFan2}" 
                 Content="MAX" 
-                Margin="40,225,199,54" 
+                Margin="40,225,199,52" 
                 Grid.Row="2" 
                 Height="28" 
                 Grid.Column="2" Click="BtnFanSpeed_Max_Click" />
 
             <Button Style="{StaticResource ScaleButtonFan2}" 
-                Content="30" 
-                Margin="120,175,120,104" 
+                Content="20" 
+                Margin="120,175,120,102" 
                 Grid.Row="2" 
                 Height="28" 
-                Grid.Column="2" Click="BtnFanSpeed_30_Click"/>
+                Grid.Column="2" Click="BtnFanSpeed_20_Click"/>
 
-            <Button x:Name="btnFanSpeed_70"
+            <Button x:Name="btnFanSpeed_60"
                 Style="{StaticResource ScaleButtonFan2}" 
-                Content="70" 
-                Margin="120,225,120,54" 
+                Content="60" 
+                Margin="120,225,120,52" 
                 Grid.Row="2" 
                 Height="28" 
-                Grid.Column="2" Click="BtnFanSpeed_70_Click"/>
+                Grid.Column="2" Click="BtnFanSpeed_60_Click"/>
 
-            <Button x:Name="btnFanSpeed_50"
+            <Button x:Name="btnFanSpeed_40"
                 Style="{StaticResource ScaleButtonFan2}" 
-                Content="50" 
-                Margin="175,175,65,104" 
+                Content="40" 
+                Margin="175,175,65,102" 
                 Grid.Row="2" 
                 Height="28" 
-                Grid.Column="2" Click="BtnFanSpeed_50_Click"/>
+                Grid.Column="2" Click="BtnFanSpeed_40_Click"/>
 
-            <Button x:Name="btnFanSpeed_90" 
+            <Button x:Name="btnFanSpeed_80" 
                 Style="{StaticResource ScaleButtonFan2}" 
-                Content="90" 
-                Margin="175,225,65,54" 
+                Content="80" 
+                Margin="175,225,65,52" 
                 Grid.Row="2" 
                 Height="28" 
-                Grid.Column="2" Click="BtnFanSpeed_90_Click"/>
+                Grid.Column="2" Click="BtnFanSpeed_80_Click"/>
 
             <Rectangle x:Name="coverSetFanSpeed"
                    Grid.Column="2" 
                    HorizontalAlignment="Left" 
-                   Height="218" 
+                   Height="216" 
                    Margin="16,58,0,0" 
                    Grid.Row="2" 
                    VerticalAlignment="Top" 
@@ -1051,7 +1057,7 @@
             <Rectangle x:Name="coverSetActivationTemp"
             Grid.Column="1" 
             HorizontalAlignment="Center" 
-            Height="101" 
+            Height="99" 
             Margin="0,58,0,0" 
             Grid.Row="2" 
             VerticalAlignment="Top" 
@@ -1077,7 +1083,7 @@
             <Rectangle x:Name="coverSetStartFanSpeed"
             Grid.Column="1" 
             HorizontalAlignment="Center" 
-            Height="101" 
+            Height="99" 
             Margin="0,175,0,0" 
             Grid.Row="2" 
             VerticalAlignment="Top" 
@@ -1125,8 +1131,6 @@
                Margin="4,4,250,2"
                Grid.Column="0"
                Grid.Row="0"/>
-
-            <!-- UI Cover -->
             <Border x:Name="coverWhole"
                 HorizontalAlignment="Left" 
                 Height="429" 
@@ -1141,7 +1145,7 @@
                 Grid.ColumnSpan="3"
                 BorderThickness="0,4,0,4">
                 <Border.Style>
-                    <Style TargetType="Border">
+                    <Style TargetType="{x:Type Border}">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsReady}" Value="True">
                                 <Setter Property="Visibility" Value="Hidden"/>
@@ -1153,6 +1157,8 @@
                     </Style>
                 </Border.Style>
             </Border>
+
+            <!-- UI Cover -->
 
             <Image Grid.Column="1" 
                HorizontalAlignment="Center" 
